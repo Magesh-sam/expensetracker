@@ -4,7 +4,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class SecurityUtil {
 
-    //to store the password in db
+    // to store the password in db/ retrive user with emailpassword
     public static String hashPassword(String password) {
 
         // gensalt's log_rounds parameter determines the complexity
@@ -12,7 +12,7 @@ public class SecurityUtil {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
-    //checking the user password and db opassword same or not
+    // checking the user password and db opassword same or not
     public static boolean verifyPassword(String candidate, String hashedPassword) {
 
         // Check that an unencrypted password matches one that has

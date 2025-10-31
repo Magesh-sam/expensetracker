@@ -17,7 +17,7 @@ public class DBConfig {
     private DBConfig() {
     }
 
-    public static Connection getConnection() {
+    private static Connection getConnection() {
         if (con == null) {
 
             try (InputStream input = new FileInputStream(PROPERTIES_FILE)) {
@@ -41,6 +41,10 @@ public class DBConfig {
             }
         }
         return con;
+    }
+
+    public static Connection getInstance() {
+        return getConnection();
     }
 
 }
