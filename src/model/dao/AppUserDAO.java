@@ -15,7 +15,7 @@ public class AppUserDAO {
     private static AppUserDAO appUserDAO;
 
     private AppUserDAO() {
-    
+
     }
 
     public static AppUserDAO getInstance() {
@@ -125,7 +125,7 @@ public class AppUserDAO {
 
     private AppUser map(ResultSet rs) throws SQLException {
         AppUser u = new AppUser();
-        u.setUserId(rs.getInt("user_id"));
+        u.setUserId(rs.getInt(1));
         u.setName(rs.getString("name"));
         Credential c = new Credential();
         c.setEmail(rs.getString("email"));

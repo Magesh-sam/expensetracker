@@ -84,7 +84,7 @@ public class PaymentMethodDAO {
 
     private PaymentMethod map(ResultSet rs) throws SQLException {
         PaymentMethod pm = new PaymentMethod();
-        pm.setPaymentMethodId(rs.getInt("paymen_method_id"));
+        pm.setPaymentMethodId(rs.getInt(1));
         pm.setName(rs.getString("name"));
         return pm;
     }

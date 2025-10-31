@@ -29,7 +29,7 @@ create Table payment_method (
 
 CREATE Table transaction_tracker (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    amount VARCHAR(255),
+    amount DECIMAL),
     category_id INT REFERENCES category (id),
     app_user_id INT REFERENCES app_user (id),
     payment_method_id INT REFERENCES payment_method (id),
