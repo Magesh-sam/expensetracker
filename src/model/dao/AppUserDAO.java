@@ -11,11 +11,11 @@ import model.pojo.AppUser;
 import model.pojo.Credential;
 
 public class AppUserDAO {
-    private static Connection conn;
+    private static Connection conn = AppContext.getDBConnection();
     private static AppUserDAO appUserDAO;
 
     private AppUserDAO() {
-        conn = AppContext.getDBConnection();
+    
     }
 
     public static AppUserDAO getInstance() {

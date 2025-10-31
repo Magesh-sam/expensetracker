@@ -13,10 +13,9 @@ import model.pojo.Category;
 
 public class CategoryDAO {
     private static CategoryDAO categoryDAO;
-    private static Connection conn;
+    private static Connection conn = AppContext.getDBConnection();
 
     private CategoryDAO() {
-        conn = AppContext.getDBConnection();
     }
 
     public static CategoryDAO getInstance() {
