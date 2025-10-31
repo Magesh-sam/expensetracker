@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import model.dao.AppUserDAO;
 import model.dao.CategoryDAO;
+import model.dao.PaymentMethodDAO;
 import util.DBConfig;
 
 public class AppContext {
@@ -22,5 +23,9 @@ public class AppContext {
 
     public static CategoryDAO getCategoryDAO() {
         return CategoryDAO.getInstance();
+    }
+
+    public static PaymentMethodDAO getPaymentMethodDAO() {
+        return PaymentMethodDAO.getInstance();
     }
 }
