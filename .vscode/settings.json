@@ -1,4 +1,9 @@
 {
-  "java.format.settings.url": ".vscode/java-formatter.xml",
-  "java.project.sourcePaths": ["src"]
+  "java.project.sourcePaths": [
+    "src"
+  ],
+  "java.project.referencedLibraries": [
+    "lib/postgresql-42.7.8.jar",
+    "lib/jbcrypt-0.4.jar",
+  ]
 }
