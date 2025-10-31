@@ -3,6 +3,11 @@ package util;
 import java.util.regex.Pattern;
 
 public class Validation {
+
+    public boolean isNonEmpty(String input) {
+        return input != null && !input.trim().isEmpty();
+    }
+
     public static boolean isValidEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
             return false;
