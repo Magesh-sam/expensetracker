@@ -3,11 +3,10 @@ package context;
 import java.sql.Connection;
 
 import model.dao.AppUserDAO;
+import model.dao.CategoryDAO;
 import util.DBConfig;
 
 public class AppContext {
-
-    private static Connection dbConnection;
 
     private AppContext() {
     }
@@ -19,5 +18,9 @@ public class AppContext {
 
     public static AppUserDAO getAppUserDAO() {
         return AppUserDAO.getInstance();
+    }
+
+    public static CategoryDAO getCategoryDAO() {
+        return CategoryDAO.getInstance();
     }
 }
