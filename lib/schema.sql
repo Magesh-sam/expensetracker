@@ -19,7 +19,7 @@ CREATE Table app_user (
 
 CREATE Table category (
     id GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(255)
+    name VARCHAR(255) UNIQUE
 );
 
 CREATE Table transaction_tracker (
@@ -48,4 +48,10 @@ INSERT INTO
 VALUES ('Groceries'),
     ('Restaurants'),
     ('Entertainment'),
+    ('Clothing'),
+    ('Health'),
+    ('Travel'),
+    ('Salary'),
+    ('Freelance'),
+    ('Bonus'),
     ('Other');
