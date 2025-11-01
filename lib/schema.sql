@@ -13,7 +13,7 @@ CREATE TYPE transaction_type as ENUM ( 'expense', 'income' );
 CREATE Table app_user (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE ,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255)
 );
 
@@ -29,7 +29,7 @@ create Table payment_method (
 
 CREATE Table transaction_tracker (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    amount DECIMAL),
+    amount DECIMAL(10, 2),
     category_id INT REFERENCES category (id),
     app_user_id INT REFERENCES app_user (id),
     payment_method_id INT REFERENCES payment_method (id),

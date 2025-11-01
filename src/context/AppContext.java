@@ -1,7 +1,6 @@
 package context;
 
 import java.sql.Connection;
-
 import model.dao.AppUserDAO;
 import model.dao.CategoryDAO;
 import model.dao.PaymentMethodDAO;

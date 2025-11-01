@@ -9,29 +9,29 @@ public class Transaction {
         expense, income
     }
 
+    private int appUserId;
     private int transactionId;
     private int categoryId;
-    private int appuserId;
     private int paymentMethodId;
     private BigDecimal amount;
     private TransactionType transactionType;
     private LocalDateTime createdAt;
 
-    public Transaction(int transactionId, int categoryId, int appuserId, int paymentMethodId, BigDecimal amount,
+    public Transaction(int transactionId, int categoryId, int appUserId, int paymentMethodId, BigDecimal amount,
             TransactionType transactionType, LocalDateTime createdAt) {
         this.transactionId = transactionId;
         this.categoryId = categoryId;
-        this.appuserId = appuserId;
+        this.appUserId = appUserId;
         this.paymentMethodId = paymentMethodId;
         this.amount = amount;
         this.transactionType = transactionType;
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 
-    public Transaction(int categoryId, int appuserId, int paymentMethodId, BigDecimal amount,
+    public Transaction(int categoryId, int appUserId, int paymentMethodId, BigDecimal amount,
             TransactionType transactionType, LocalDateTime createdAt) {
         this.categoryId = categoryId;
-        this.appuserId = appuserId;
+        this.appUserId = appUserId;
         this.paymentMethodId = paymentMethodId;
         this.amount = amount;
         this.transactionType = transactionType;
@@ -42,6 +42,9 @@ public class Transaction {
         this.amount = amount;
         this.transactionType = transactionType;
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
+    }
+
+    public Transaction() {
     }
 
     public int getTransactionId() {
@@ -61,11 +64,11 @@ public class Transaction {
     }
 
     public int getAppuserId() {
-        return appuserId;
+        return appUserId;
     }
 
     public void setAppuserId(int appuserId) {
-        this.appuserId = appuserId;
+        this.appUserId = appuserId;
     }
 
     public int getPaymentMethodId() {
