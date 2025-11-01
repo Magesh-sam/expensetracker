@@ -11,7 +11,8 @@ import model.dto.AppUser;
 import model.dto.Credential;
 
 public class AppUserDAO {
-    private static  Connection conn = AppContext.getDBConnection();
+
+    private static final Connection conn = AppContext.getDBConnection();
     private static AppUserDAO appUserDAO;
 
     private AppUserDAO() {
@@ -102,7 +103,6 @@ public class AppUserDAO {
     // }
     // return users;
     // }
-
     public boolean updateUser(AppUser user) throws SQLException {
         String SQL = "UPDATE app_user set name = ?, email = ?, password = ? WHERE user_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {

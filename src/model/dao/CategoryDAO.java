@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.AppContext;
-import model.pojo.Category;
+import model.dto.Category;
 
 public class CategoryDAO {
+
     private static CategoryDAO categoryDAO;
-    private static Connection conn = AppContext.getDBConnection();
+    private static final Connection conn = AppContext.getDBConnection();
 
     private CategoryDAO() {
     }
@@ -27,8 +28,8 @@ public class CategoryDAO {
     }
 
     public int createCategory(Category category) throws SQLException {
-        String SQL = "INSERT INTO category (name) VALUES (?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO category (name) VALUES (?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, category.getName());
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -43,8 +44,8 @@ public class CategoryDAO {
     }
 
     public Category getCategoryById(int categoryId) throws SQLException {
-        String SQL = "SELECT * FROM category where category_id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+        String sql = "SELECT * FROM category where category_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, categoryId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -55,22 +56,22 @@ public class CategoryDAO {
         return null;
     }
 
-    public Category getAllCategory() throws SQLException {
-        String SQL = "SELECT * FROM category";
+    public List<Category> getAllCategory() throws SQLException {
+        String sql = "SELECT * FROM category";
         List<Category> categories = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     categories.add(map(rs));
                 }
             }
         }
-        return null;
+        return categories;
     }
 
     public boolean updateCategory(Category category) throws SQLException {
-        String SQL = "UPDATE category SET name = ? WHERE category_id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+        String sql = "UPDATE category SET name = ? WHERE category_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, category.getName());
             pstmt.setInt(2, category.getCategoryId());
             return pstmt.executeUpdate() > 0;
@@ -78,8 +79,8 @@ public class CategoryDAO {
     }
 
     public boolean deleteCategory(int categoryId) throws SQLException {
-        String SQL = "DELETE FROM category  WHERE category_id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+        String sql = "DELETE FROM category  WHERE category_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, categoryId);
             return pstmt.executeUpdate() > 0;
         }

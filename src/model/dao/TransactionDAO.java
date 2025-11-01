@@ -1,7 +1,6 @@
 package model.dao;
 
 import context.AppContext;
-import model.dto.Category;
 import model.dto.CategoryAmount;
 import model.dto.Transaction;
 
@@ -10,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +130,65 @@ public class TransactionDAO {
         return transactions;
     }
 
-    public List<CategoryAmount> getTopFiv3CategoriesByAmount() throws SQLException {
+    public List<Transaction> getAllTransactionsByDate(LocalDate date) throws SQLException {
+        String sql = "SELECT * FROM transaction WHERE DATE(created_at) = ?";
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDate(1, java.sql.Date.valueOf(date));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    transactions.add(map(rs));
+                }
+            }
+        }
+        return transactions;
+    }
+
+    public List<Transaction> getAllTransactionsByDateRange(LocalDate startDate, LocalDate endDate) throws SQLException {
+        String sql = "SELECT * FROM transaction WHERE DATE(created_at) BETWEEN ? AND ?";
+        List<Transaction> transactions = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDate(1, java.sql.Date.valueOf(startDate));
+            pstmt.setDate(2, java.sql.Date.valueOf(endDate));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    transactions.add(map(rs));
+                }
+            }
+        }
+        return transactions;
+    }
+
+    public List<Transaction> getAllTransactionsMonthAndYear(LocalDate date) throws SQLException {
+        String sql = "SELECT * FROM transaction WHERE EXTRACT(YEAR FROM created_at) = ? AND EXTRACT(MONTH FROM created_at) = ?";
+        List<Transaction> transactions = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, date.getYear());
+            pstmt.setInt(2, date.getMonthValue());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    transactions.add(map(rs));
+                }
+            }
+        }
+        return transactions;
+    }
+
+    public List<Transaction> getTopFiveTransactionsByAmount() throws SQLException {
+        String sql = "SELECT * FROM transaction ORDER BY amount DESC LIMIT 5";
+        List<Transaction> topFiveTransactionsByAmount = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                topFiveTransactionsByAmount.add(map(rs));
+            }
+        }
+        return topFiveTransactionsByAmount;
+    }
+
+    public List<CategoryAmount> getTopFiveCategoriesByAmount() throws SQLException {
         String sql = "SELECT c.id category_id, c.name category_name, SUM(amount) total_amount FROM transaction t join category c on t.category_id = c.id GROUP BY c.id ORDER BY total_amount DESC LIMIT 5";
         List<CategoryAmount> topFiveCategoriesByAmounts = new ArrayList<>();
         try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
@@ -142,7 +200,7 @@ public class TransactionDAO {
     }
 
     public boolean updateTransaction(Transaction transaction) throws SQLException {
-        String sql = "UPDATE transaction SET category_id = ?,app_user_id = ?,payment_method_id = ?,amount = ?,transaction_type = ?::transaction_type WHERE transaction_id = ?";
+        String sql = "UPDATE transaction SET category_id = ?,app_user_id = ?,payment_method_id = ?,amount = ?,transaction_type = ?::transaction_type WHERE id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, transaction.getCategoryId());
             pstmt.setInt(2, transaction.getAppuserId());
@@ -155,7 +213,7 @@ public class TransactionDAO {
     }
 
     public boolean deleteTransaction(int transactionId) throws SQLException {
-        String sql = "DELETE FROM transaction WHERE transaction_id = ?";
+        String sql = "DELETE FROM transaction WHERE id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, transactionId);
             return pstmt.executeUpdate() > 0;

@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.AppContext;
-import model.pojo.PaymentMethod;
+import model.dto.PaymentMethod;
 
 public class PaymentMethodDAO {
-    private static Connection conn = AppContext.getDBConnection();
+
+    private static final Connection conn = AppContext.getDBConnection();
     private static PaymentMethodDAO paymentMethodDAO;
 
     private PaymentMethodDAO() {
@@ -25,7 +26,6 @@ public class PaymentMethodDAO {
         }
         return paymentMethodDAO;
     }
-
 
     public int createPayementMethod(PaymentMethod paymentMethod) throws SQLException {
         String SQL = "INSERT INTO payment_method (name) VALUES (?) ";
