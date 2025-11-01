@@ -1,4 +1,4 @@
-package model.pojo;
+package model.dto;
 
 public class PaymentMethod {
     private int paymentMethodId;

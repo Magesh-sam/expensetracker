@@ -1,19 +1,17 @@
-package model.pojo;
+package model.dto;
 
-public class Category {
+import java.math.BigDecimal;
+
+public class CategoryAmount {
+
     private int categoryId;
     private String name;
+    private BigDecimal amount;
 
-    public Category(int categoryId, String name) {
+    public CategoryAmount(int categoryId, String name, BigDecimal amount) {
         this.categoryId = categoryId;
         this.name = name;
-    }
-
-    public Category() {
-    }
-
-    public Category(String name) {
-        this.name = name;
+        this.amount = amount;
     }
 
     public int getCategoryId() {
@@ -22,6 +20,14 @@ public class Category {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public String getName() {

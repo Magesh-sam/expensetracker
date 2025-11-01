@@ -1,6 +1,10 @@
 package model.dao;
 
 import context.AppContext;
+import model.dto.Category;
+import model.dto.CategoryAmount;
+import model.dto.Transaction;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,8 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import model.pojo.Transaction;
 
 public class TransactionDAO {
 
@@ -60,6 +62,20 @@ public class TransactionDAO {
         return null;
     }
 
+    public List<Transaction> getAllTransactionsByUserId(int userId) throws SQLException {
+        String sql = "SELECT * FROM transaction WHERE app_user_id = ?";
+        List<Transaction> transactions = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    transactions.add(map(rs));
+                }
+            }
+        }
+        return transactions;
+    }
+
     public List<Transaction> getAllTransactions() throws SQLException {
         String sql = "SELECT * FROM transaction";
         List<Transaction> transactions = new ArrayList<>();
@@ -69,6 +85,60 @@ public class TransactionDAO {
             }
         }
         return transactions;
+    }
+
+    public List<Transaction> getAllTransactionsByCategory(int categoryId) throws SQLException {
+        String sql = "SELECT * FROM transaction WHERE category_id = ?";
+        List<Transaction> transactions = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, categoryId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    transactions.add(map(rs));
+                }
+            }
+        }
+        return transactions;
+    }
+
+    public List<Transaction> getAllTransactionsByPaymentMethod(int paymentMethodId) throws SQLException {
+        String sql = "SELECT * FROM transaction WHERE payment_method_id = ?";
+        List<Transaction> transactions = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, paymentMethodId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    transactions.add(map(rs));
+                }
+            }
+        }
+        return transactions;
+    }
+
+    public List<Transaction> getAllTransactionsByTransactionType(Transaction.TransactionType transactionType)
+            throws SQLException {
+        String sql = "SELECT * FROM transaction WHERE transaction_type = ?::transaction_type";
+        List<Transaction> transactions = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, transactionType.toString());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    transactions.add(map(rs));
+                }
+            }
+        }
+        return transactions;
+    }
+
+    public List<CategoryAmount> getTopFiv3CategoriesByAmount() throws SQLException {
+        String sql = "SELECT c.id category_id, c.name category_name, SUM(amount) total_amount FROM transaction t join category c on t.category_id = c.id GROUP BY c.id ORDER BY total_amount DESC LIMIT 5";
+        List<CategoryAmount> topFiveCategoriesByAmounts = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                topFiveCategoriesByAmounts.add(new CategoryAmount(rs.getInt("id"), rs.getString("name"), rs.getBigDecimal("total_amount")));
+            }
+        }
+        return topFiveCategoriesByAmounts;
     }
 
     public boolean updateTransaction(Transaction transaction) throws SQLException {

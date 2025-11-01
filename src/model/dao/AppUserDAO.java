@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import context.AppContext;
-import model.pojo.AppUser;
-import model.pojo.Credential;
+import model.dto.AppUser;
+import model.dto.Credential;
 
 public class AppUserDAO {
     private static  Connection conn = AppContext.getDBConnection();
