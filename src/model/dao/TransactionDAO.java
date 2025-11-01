@@ -71,6 +71,27 @@ public class TransactionDAO {
         return transactions;
     }
 
+    public boolean updateTransaction(Transaction transaction) throws SQLException {
+        String sql = "UPDATE transaction SET category_id = ?,app_user_id = ?,payment_method_id = ?,amount = ?,transaction_type = ?::transaction_type WHERE transaction_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, transaction.getCategoryId());
+            pstmt.setInt(2, transaction.getAppuserId());
+            pstmt.setInt(3, transaction.getPaymentMethodId());
+            pstmt.setBigDecimal(4, transaction.getAmount());
+            pstmt.setString(5, transaction.getTransactionType().toString());
+            pstmt.setInt(6, transaction.getTransactionId());
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
+    public boolean deleteTransaction(int transactionId) throws SQLException {
+        String sql = "DELETE FROM transaction WHERE transaction_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, transactionId);
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
     private Transaction map(ResultSet rs) throws SQLException {
         Transaction t = new Transaction();
         t.setTransactionId(rs.getInt("id"));
