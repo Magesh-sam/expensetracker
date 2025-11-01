@@ -4,7 +4,10 @@ import java.util.regex.Pattern;
 
 public class Validation {
 
-    public boolean isNonEmpty(String input) {
+    private Validation() {
+    }
+
+    public static boolean isNonEmpty(String input) {
         return input != null && !input.trim().isEmpty();
     }
 
@@ -26,5 +29,14 @@ public class Validation {
         String mobileNoRegex = "^\\d{10}$";
         Pattern p = Pattern.compile(mobileNoRegex);
         return p.matcher(mobileNo).matches();
+    }
+
+    public static boolean isValidPassword(String password) {
+        if (!isNonEmpty(password)) {
+            return false;
+        }
+        String passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
+        Pattern p = Pattern.compile(passwordRegex);
+        return p.matcher(password).matches();
     }
 }
