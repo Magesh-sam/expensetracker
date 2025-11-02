@@ -1,6 +1,8 @@
 package exceptions;
 
-public class InvalidMobileNumberException extends RuntimeException {
+public class InvalidMobileNumberException extends Exception {
+
+    
 
     public InvalidMobileNumberException() {
     }

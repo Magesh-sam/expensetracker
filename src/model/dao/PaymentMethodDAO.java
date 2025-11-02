@@ -1,5 +1,6 @@
 package model.dao;
 
+import context.AppContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,8 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import context.AppContext;
 import model.dto.PaymentMethod;
 
 public class PaymentMethodDAO {
@@ -28,8 +27,8 @@ public class PaymentMethodDAO {
     }
 
     public int createPayementMethod(PaymentMethod paymentMethod) throws SQLException {
-        String SQL = "INSERT INTO payment_method (name) VALUES (?) ";
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO payment_method (name) VALUES (?) ";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, paymentMethod.getName());
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -42,8 +41,8 @@ public class PaymentMethodDAO {
     }
 
     public PaymentMethod getPaymentMethodById(int paymentMethodId) throws SQLException {
-        String SQL = "SELECT * FROM payment_method WHERE payment_id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+        String sql = "SELECT * FROM payment_method WHERE payment_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, paymentMethodId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
@@ -55,9 +54,9 @@ public class PaymentMethodDAO {
     }
 
     public List<PaymentMethod> getAllPaymentMethods() throws SQLException {
-        String SQL = "SELECT * FROM payment_method";
+        String sql = "SELECT * FROM payment_method";
         List<PaymentMethod> paymentMethods = new ArrayList<>();
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL); ResultSet rs = pstmt.executeQuery()) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 paymentMethods.add(map(rs));
             }
@@ -66,8 +65,8 @@ public class PaymentMethodDAO {
     }
 
     public boolean updatePaymentMethod(PaymentMethod paymentMethod) throws SQLException {
-        String SQL = "UPDATE payment_method SET name = ? WHERE payment_method_id = ? ";
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+        String sql = "UPDATE payment_method SET name = ? WHERE payment_method_id = ? ";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, paymentMethod.getName());
             pstmt.setInt(2, paymentMethod.getPaymentMethodId());
             return pstmt.executeUpdate() > 0;
@@ -75,8 +74,8 @@ public class PaymentMethodDAO {
     }
 
     public boolean deletePaymentMethod(int paymentMethodId) throws SQLException {
-        String SQL = "DELETE FROM payment_method WHERE payment_method_id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+        String sql = "DELETE FROM payment_method WHERE payment_method_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, paymentMethodId);
             return pstmt.executeUpdate() > 0;
         }

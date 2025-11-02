@@ -1,6 +1,10 @@
 package exceptions;
 
-public class InvalidEmailException extends RuntimeException {
+public class InvalidEmailException extends Exception {
+
+    
+    
+
     public InvalidEmailException() {
     }
 
