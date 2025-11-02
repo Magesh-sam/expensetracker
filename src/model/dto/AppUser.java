@@ -1,11 +1,26 @@
 package model.dto;
 
 public class AppUser {
+
     private int userId;
     private String name;
     private Credential loginCredential;
+    private String mobileNumber;
 
     public AppUser() {
+    }
+
+    public AppUser(int userId, String name, Credential loginCredential, String mobileNumber) {
+        this.userId = userId;
+        this.name = name;
+        this.loginCredential = loginCredential;
+        this.mobileNumber = mobileNumber;
+    }
+
+    public AppUser(String name, Credential loginCredential, String mobileNumber) {
+        this.name = name;
+        this.loginCredential = loginCredential;
+        this.mobileNumber = mobileNumber;
     }
 
     public int getUserId() {
@@ -30,6 +45,14 @@ public class AppUser {
 
     public void setLoginCredential(Credential loginCredential) {
         this.loginCredential = loginCredential;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
 }

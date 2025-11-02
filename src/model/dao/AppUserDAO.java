@@ -26,13 +26,14 @@ public class AppUserDAO {
     }
 
     public int registerUser(AppUser appuser) throws SQLException {
-        String sql = "INSERT INTO app_user (name,email,password) VALUES (?,?,?) ";
+        String sql = "INSERT INTO app_user (name,email,password,mobile_number) VALUES (?,?,?,?) ";
         try (
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 
             pstmt.setString(1, appuser.getName());
             pstmt.setString(2, appuser.getLoginCredential().getEmail());
             pstmt.setString(3, appuser.getLoginCredential().getPassword());
+            pstmt.setString(4, appuser.getMobileNumber());
 
             pstmt.executeUpdate();
 
@@ -80,6 +81,7 @@ public class AppUserDAO {
         String sql = "SELECT * FROM app_user where LOWER(email) = LOWER(?) AND LOWER(password) = LOWER(?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setString(1, email);
+            pstmt.setString(2, password);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return map(rs);
@@ -121,11 +123,11 @@ public class AppUserDAO {
         }
     }
 
-    public boolean resetPassword(int userId, String password) throws SQLException {
-        String sql = "UPDATE app_user SET password = ? WHERE user_id = ?";
+    public boolean resetPassword(String mobileNo, String password) throws SQLException {
+        String sql = "UPDATE app_user SET password = ? WHERE mobile_number = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, password);
-            pstmt.setInt(2, userId);
+            pstmt.setString(1, mobileNo);
+            pstmt.setString(2, password);
             return pstmt.executeUpdate() > 0;
         }
     }
@@ -148,6 +150,7 @@ public class AppUserDAO {
         c.setEmail(rs.getString("email"));
         c.setPassword(rs.getString("password"));
         u.setLoginCredential(c);
+        u.setMobileNumber(rs.getString("mobile_number"));
         return u;
 
     }

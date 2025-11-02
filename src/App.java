@@ -1,7 +1,9 @@
 
+import view.AppUserView;
+
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("Expense Tracker");
+        new AppUserView().displayMenu();
     }
 }
