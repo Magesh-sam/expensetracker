@@ -14,7 +14,8 @@ CREATE Table app_user (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255)
+    password VARCHAR(255) NOT NULL,
+    mobile_number VARCHAR(10) UNIQUE CHECK (mobile_number ~ '^[0-9]{10}$')
 );
 
 CREATE Table category (
