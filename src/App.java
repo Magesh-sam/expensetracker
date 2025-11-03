@@ -1,9 +1,9 @@
 
-import view.AppUserView;
+import context.AppContext;
 
 public class App {
 
     public static void main(String[] args) {
-        new AppUserView().displayMenu();
+        AppContext.getAppUserView().displayMenu();
     }
 }

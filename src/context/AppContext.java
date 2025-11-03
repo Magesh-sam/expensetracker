@@ -8,6 +8,8 @@ import model.dao.PaymentMethodDAO;
 import model.dao.TransactionDAO;
 import service.AppUserService;
 import util.DBConfig;
+import view.AppUserView;
+import view.FunctionalView;
 
 public class AppContext {
 
@@ -43,8 +45,16 @@ public class AppContext {
     }
 
     //controllers
-
     public static AppUserController getAppUserController() {
         return AppUserController.getInstance();
+    }
+
+    //views
+    public static AppUserView getAppUserView() {
+        return AppUserView.getInstance();
+    }
+
+    public static FunctionalView getFunctionalView() {
+        return FunctionalView.getInstance();
     }
 }

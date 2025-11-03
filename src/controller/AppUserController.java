@@ -4,6 +4,7 @@ import context.AppContext;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidMobileNumberException;
 import exceptions.InvalidPasswordException;
+import exceptions.MobileNumberMismatchException;
 import java.sql.SQLException;
 import model.dto.AppUser;
 import service.AppUserService;
@@ -14,7 +15,6 @@ public class AppUserController {
     private static final AppUserService appUserService = AppContext.getAppUserService();
 
     private AppUserController() {
-        // Private constructor for singleton
     }
 
     public static AppUserController getInstance() {
@@ -40,6 +40,42 @@ public class AppUserController {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public boolean updateUser(AppUser appUser) {
+        try {
+            return appUserService.updateUser(appUser);
+        } catch (SQLException | InvalidEmailException | InvalidPasswordException | InvalidMobileNumberException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean deleteUser(int userId) {
+        try {
+            return appUserService.deleteUser(userId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean resetPassword(String mobileNo, String email, String password) {
+        try {
+            return appUserService.resetPassword(mobileNo, email, password);
+        } catch (SQLException | InvalidPasswordException | InvalidEmailException | InvalidMobileNumberException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean checkEmailAndMobileNoMatch(String email, String mobileNo) {
+        try {
+            return appUserService.checkEmailAndMobileNoMatch(email, mobileNo);
+        } catch (SQLException | InvalidEmailException | InvalidMobileNumberException | MobileNumberMismatchException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 }

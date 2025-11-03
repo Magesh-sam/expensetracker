@@ -4,6 +4,8 @@ import context.AppContext;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidMobileNumberException;
 import exceptions.InvalidPasswordException;
+import exceptions.MobileNumberMismatchException;
+
 import java.sql.SQLException;
 import java.util.Objects;
 import model.dao.AppUserDAO;
@@ -64,7 +66,8 @@ public class AppUserService {
         return appUserDAO.deleteUser(userId);
     }
 
-    public boolean resetPassword(String mobileNo, String email, String password) throws SQLException, InvalidPasswordException, InvalidEmailException, InvalidMobileNumberException {
+    public boolean resetPassword(String mobileNo, String email, String password)
+            throws SQLException, InvalidPasswordException, InvalidEmailException, InvalidMobileNumberException {
         if (!Validation.isValidMobileNo(mobileNo)) {
             throw new InvalidMobileNumberException("Mobile number is not valid");
         }
@@ -82,6 +85,20 @@ public class AppUserService {
             throw new IllegalArgumentException("Mobile number does not match");
         }
         return appUserDAO.resetPassword(mobileNo, password);
+    }
+
+    public boolean checkEmailAndMobileNoMatch(String email, String mobileNo) throws SQLException, InvalidEmailException, InvalidMobileNumberException, MobileNumberMismatchException {
+        if (!Validation.isValidEmail(email)) {
+            throw new InvalidEmailException("Email is not valid");
+        }
+        if (!Validation.isValidMobileNo(mobileNo)) {
+            throw new InvalidMobileNumberException("Mobile number is not valid");
+        }
+        AppUser existingUser = appUserDAO.getUserByEmail(email);
+        if (existingUser == null) {
+            throw new MobileNumberMismatchException("Email and mobile number does not match");
+        }
+        return existingUser.getMobileNumber().equals(mobileNo);
     }
 
     private void validateAppUser(AppUser appUser) throws InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException {
