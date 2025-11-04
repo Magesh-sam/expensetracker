@@ -22,3 +22,7 @@ income input -> amount, income category (optional eg:salary, freelance, bonus, e
 
 
 show income expenses remaining
+
+
+
+fix add expense out of bound excep when entered zero

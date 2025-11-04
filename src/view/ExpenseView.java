@@ -12,6 +12,7 @@ import model.dto.Transaction;
 import model.dto.Transaction.TransactionType;
 import model.dto.PaymentMethod;
 import util.Input;
+import util.Print;
 
 public class ExpenseView {
 
@@ -76,8 +77,8 @@ public class ExpenseView {
 
         int choice;
         while (true) {
-            choice = Input.getInt("Payment method number (1-" + categories.size() + ")");
-            if (choice >= 1 || choice <= categories.size()) {
+            choice = Input.getInt("Category number (1-" + categories.size() + ")");
+            if (choice >= 1 && choice <= categories.size()) {
 
                 break;
             }
@@ -93,7 +94,7 @@ public class ExpenseView {
         System.out.println("Select Payment Method");
         while (true) {
             choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
-            if (choice >= 1 || choice <= paymentMethods.size()) {
+            if (choice >= 1 && choice <= paymentMethods.size()) {
 
                 break;
             }
@@ -124,7 +125,7 @@ public class ExpenseView {
             return;
         }
 
-        displayTransactionList(expenses);
+        Print.displayTransactionList(expenses);
         int choice = Input.getInt("expense number to edit (1-" + expenses.size() + ")");
 
         if (choice < 1 || choice > expenses.size()) {
@@ -189,7 +190,7 @@ public class ExpenseView {
             return;
         }
 
-        displayTransactionList(expenses);
+        Print.displayTransactionList(expenses);
         int choice = Input.getInt("expense number to delete (1-" + expenses.size() + ")");
 
         if (choice < 1 || choice > expenses.size()) {
@@ -212,7 +213,7 @@ public class ExpenseView {
             System.out.println("No expenses found.");
             return;
         }
-        displayTransactionList(expenses);
+        Print.displayTransactionList(expenses);
     }
 
     private void listExpensesByCategory() {
@@ -238,7 +239,7 @@ public class ExpenseView {
             System.out.println("No expenses found for this category.");
             return;
         }
-        displayTransactionList(expenses);
+        Print.displayTransactionList(expenses);
     }
 
     private void listExpensesByDateRange() {
@@ -260,7 +261,7 @@ public class ExpenseView {
                 return;
             }
 
-            displayTransactionList(expenseTransactionsByDateRange);
+            Print.displayTransactionList(expenseTransactionsByDateRange);
         } catch (Exception e) {
             System.out.println("Invalid date format. Please use YYYY-MM-DD.");
         }
@@ -279,7 +280,7 @@ public class ExpenseView {
                 return;
             }
 
-            displayTransactionList(expenses);
+            Print.displayTransactionList(expenses);
         } catch (Exception e) {
             System.out.println("Invalid date format. Please use YYYY-MM-DD.");
         }
@@ -291,7 +292,7 @@ public class ExpenseView {
             System.out.println("No expenses found.");
             return;
         }
-        displayTransactionList(expenses);
+        Print.displayTransactionList(expenses);
     }
 
     private void listTopCategoriesByExpense() {
@@ -302,15 +303,6 @@ public class ExpenseView {
         }
         for (int i = 0; i < expenses.size(); i++) {
             System.out.println((i + 1) + " | " + expenses.get(i).getName() + " | " + expenses.get(i).getAmount());
-        }
-
-    }
-
-    private void displayTransactionList(List<Transaction> transactions) {
-
-        for (int i = 0; i < transactions.size(); i++) {
-            System.out
-                    .println((i + 1) + " | " + transactions.get(i).getName() + " | " + transactions.get(i).getAmount());
         }
 
     }

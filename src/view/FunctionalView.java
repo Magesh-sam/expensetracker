@@ -7,6 +7,7 @@ import controller.TransactionController;
 import model.dto.CategoryAmount;
 import model.dto.Transaction;
 import util.Input;
+import util.Print;
 
 public class FunctionalView {
 
@@ -78,7 +79,7 @@ public class FunctionalView {
             return;
         }
         System.out.println("===Top Expenses===");
-        displayTransactionList(expenses);
+        Print.displayTransactionList(expenses);
     }
 
     private void listTopIncomes() {
@@ -88,7 +89,7 @@ public class FunctionalView {
             return;
         }
         System.out.println("===Top Incomes===");
-        displayTransactionList(incomes);
+        Print.displayTransactionList(incomes);
     }
 
     private void listTopCategoriesByAmount() {
@@ -104,14 +105,6 @@ public class FunctionalView {
 
     }
 
-    private void displayTransactionList(List<Transaction> transactions) {
-
-        for (int i = 0; i < transactions.size(); i++) {
-            System.out
-                    .println((i + 1) + " | " + transactions.get(i).getName() + " | " + transactions.get(i).getAmount());
-        }
-
-    }
 
     private void printStats() {
         int totalIncome = transactionController.getTotalIncome(currentUserId);
