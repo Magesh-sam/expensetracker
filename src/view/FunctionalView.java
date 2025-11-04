@@ -1,5 +1,6 @@
 package view;
 
+import context.AppContext;
 import util.Input;
 
 public class FunctionalView {
@@ -45,10 +46,12 @@ public class FunctionalView {
 
     private void manageExpenses() {
         System.out.println("Manage Expenses");
+        AppContext.getExpenseView().displayMenu();
     }
 
     private void manageIncomes() {
         System.out.println("Manage Incomes");
+        AppContext.getIncomeView().displayMenu();
 
     }
 

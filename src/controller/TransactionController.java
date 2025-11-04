@@ -1,7 +1,6 @@
 package controller;
 
-import context.AppContext;
-import model.dao.TransactionDAO;
+import service.TransactionService;
 import model.dto.CategoryAmount;
 import model.dto.Transaction;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import java.util.List;
 public class TransactionController {
 
     private static TransactionController transactionController;
-    private static final TransactionDAO transactionDAO = TransactionDAO.getInstance();
+    private static final TransactionService transactionService = TransactionService.getInstance();
 
     private TransactionController() {
     }
@@ -25,7 +24,7 @@ public class TransactionController {
 
     public int createTransaction(Transaction transaction) {
         try {
-            return transactionDAO.createTransaction(transaction);
+            return transactionService.createTransaction(transaction);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -34,7 +33,7 @@ public class TransactionController {
 
     public List<Transaction> getAllTransactionsByUserId(int userId) {
         try {
-            return transactionDAO.getAllTransactionsByUserId(userId);
+            return transactionService.getAllTransactionsByUserId(userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -43,7 +42,7 @@ public class TransactionController {
 
     public List<Transaction> getExpensesByUserId(int userId) {
         try {
-            return transactionDAO.getExpensesByUserId(userId);
+            return transactionService.getExpensesByUserId(userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -52,7 +51,7 @@ public class TransactionController {
 
     public List<Transaction> getIncomeByUserId(int userId) {
         try {
-            return transactionDAO.getIncomeByUserId(userId);
+            return transactionService.getIncomeByUserId(userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -61,7 +60,7 @@ public class TransactionController {
 
     public List<Transaction> getExpensesByCategory(int userId, int categoryId) {
         try {
-            return transactionDAO.getExpensesByCategory(userId, categoryId);
+            return transactionService.getExpensesByCategory(userId, categoryId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -70,7 +69,34 @@ public class TransactionController {
 
     public List<Transaction> getIncomeByCategory(int userId, int categoryId) {
         try {
-            return transactionDAO.getIncomeByCategory(userId, categoryId);
+            return transactionService.getIncomeByCategory(userId, categoryId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Transaction> getTransactionsByCategory(int userId, int categoryId) {
+        try {
+            return transactionService.getTransactionsByCategory(userId, categoryId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Transaction> getTopFiveTransactionsByAmount(int userId) {
+        try {
+            return transactionService.getTopFiveTransactionsByAmount(userId);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<CategoryAmount> getTopFiveCategoriesByAmount(int userId) {
+        try {
+            return transactionService.getTopFiveCategoriesByAmount(userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -79,7 +105,7 @@ public class TransactionController {
 
     public List<Transaction> getTransactionsByDate(int userId, LocalDate date) {
         try {
-            return transactionDAO.getTransactionsByDate(userId, date);
+            return transactionService.getTransactionsByDate(userId, date);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -88,7 +114,7 @@ public class TransactionController {
 
     public List<Transaction> getTopFiveExpensesByAmount(int userId) {
         try {
-            return transactionDAO.getTopFiveExpensesByAmount(userId);
+            return transactionService.getTopFiveExpensesByAmount(userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -97,7 +123,7 @@ public class TransactionController {
 
     public List<Transaction> getTopFiveIncomeByAmount(int userId) {
         try {
-            return transactionDAO.getTopFiveIncomeByAmount(userId);
+            return transactionService.getTopFiveIncomeByAmount(userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -106,7 +132,7 @@ public class TransactionController {
 
     public List<CategoryAmount> getTopFiveExpenseCategoriesByAmount(int userId) {
         try {
-            return transactionDAO.getTopFiveExpenseCategoriesByAmount(userId);
+            return transactionService.getTopFiveExpenseCategoriesByAmount(userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -115,7 +141,7 @@ public class TransactionController {
 
     public List<CategoryAmount> getTopFiveIncomeCategoriesByAmount(int userId) {
         try {
-            return transactionDAO.getTopFiveIncomeCategoriesByAmount(userId);
+            return transactionService.getTopFiveIncomeCategoriesByAmount(userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -124,7 +150,7 @@ public class TransactionController {
 
     public boolean updateTransaction(Transaction transaction) {
         try {
-            return transactionDAO.updateTransaction(transaction);
+            return transactionService.updateTransaction(transaction);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -133,7 +159,7 @@ public class TransactionController {
 
     public boolean deleteTransaction(int transactionId, int userId) {
         try {
-            return transactionDAO.deleteTransaction(transactionId, userId);
+            return transactionService.deleteTransaction(transactionId, userId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

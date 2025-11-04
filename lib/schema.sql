@@ -15,34 +15,37 @@ CREATE Table app_user (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    mobile_number VARCHAR(10) UNIQUE CHECK (mobile_number ~ '^[0-9]{10}$')
+    mobile_number VARCHAR(10) UNIQUE NOT NULL CHECK (mobile_number ~ '^[0-9]{10}$')
 );
 
 CREATE Table category (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(255) UNIQUE
+    name VARCHAR(255) UNIQUE NOT NULL
 );
 
 create Table payment_method (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(255) UNIQUE
+    name VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE Table transaction_tracker (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     amount DECIMAL(10, 2),
-    category_id INT REFERENCES category (id),
-    app_user_id INT REFERENCES app_user (id),
-    payment_method_id INT REFERENCES payment_method (id),
-    transaction_type VARCHAR(255),
-    created_at TIMESTAMP
+    category_id INT REFERENCES category (id) NOT NULL,
+    app_user_id INT REFERENCES app_user (id) NOT NULL,
+    payment_method_id INT REFERENCES payment_method (id) NOT NULL,
+    transaction_type VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL
 );
 
 INSERT INTO
     payment_method (name)
 VALUES ('Cash'),
     ('Credit Card'),
-    ('Debit Card');
+    ('Debit Card'),
+    ('Net Banking'),
+    ('UPI'),
+    ('Other');
 
 INSERT INTO
     category (name)

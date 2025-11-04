@@ -20,7 +20,7 @@ public class IncomeView {
         int choice;
 
         while (true) {
-            System.out.println("1. Add Income\n2. Edit Income\n3. Delete Income\n4. List Incomes\n5. List Incomes by Category\n6. List Incomes by Date Range\n7. List Incomes by Date\n8. List Incomes by Month and Year\n9. Exit");
+            System.out.println("1. Add Income\n2. Edit Income\n3. Delete Income\n4. List Incomes\n5. List Incomes by Category\n6. List Incomes by Date Range\n7. List Incomes by Date\n8. List Incomes by Month and Year\n9. Go back");
             choice = Input.getInt("choice");
             switch (choice) {
                 case 1 ->
@@ -40,8 +40,7 @@ public class IncomeView {
                 case 8 ->
                     listIncomesByMonthAndYear();
                 case 9 -> {
-                    System.out.println("Exiting...");
-                    System.exit(0);
+                    return;
                 }
                 default ->
                     System.out.println("Invalid choice");
