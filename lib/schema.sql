@@ -34,7 +34,7 @@ CREATE Table transaction_tracker (
     category_id INT REFERENCES category (id) NOT NULL,
     app_user_id INT REFERENCES app_user (id) NOT NULL,
     payment_method_id INT REFERENCES payment_method (id) NOT NULL,
-    transaction_type transaction_type NOT NULL,
+    transaction_type VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL
 );
 
