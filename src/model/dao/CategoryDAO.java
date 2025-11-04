@@ -9,17 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.AppContext;
+import interfaces.ICategoryDAO;
 import model.dto.Category;
 
-public class CategoryDAO {
+public class CategoryDAO implements ICategoryDAO {
 
-    private static CategoryDAO categoryDAO;
+    private static ICategoryDAO categoryDAO;
     private static final Connection conn = AppContext.getDBConnection();
 
     private CategoryDAO() {
     }
 
-    public static CategoryDAO getInstance() {
+    public static ICategoryDAO getInstance() {
         if (categoryDAO == null) {
             categoryDAO = new CategoryDAO();
         }
@@ -27,6 +28,7 @@ public class CategoryDAO {
 
     }
 
+    @Override
     public int createCategory(Category category) throws SQLException {
         String sql = "INSERT INTO category (name) VALUES (?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -43,6 +45,7 @@ public class CategoryDAO {
         }
     }
 
+    @Override
     public Category getCategoryById(int categoryId) throws SQLException {
         String sql = "SELECT * FROM category where category_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -56,6 +59,7 @@ public class CategoryDAO {
         return null;
     }
 
+    @Override
     public List<Category> getAllCategory() throws SQLException {
         String sql = "SELECT * FROM category";
         List<Category> categories = new ArrayList<>();
@@ -69,6 +73,7 @@ public class CategoryDAO {
         return categories;
     }
 
+    @Override
     public boolean updateCategory(Category category) throws SQLException {
         String sql = "UPDATE category SET name = ? WHERE category_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -78,6 +83,7 @@ public class CategoryDAO {
         }
     }
 
+    @Override
     public boolean deleteCategory(int categoryId) throws SQLException {
         String sql = "DELETE FROM category  WHERE category_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

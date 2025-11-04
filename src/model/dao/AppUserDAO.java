@@ -1,6 +1,8 @@
 package model.dao;
 
 import context.AppContext;
+import interfaces.IAppUserDAO;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,22 +11,23 @@ import java.sql.Statement;
 import model.dto.AppUser;
 import model.dto.Credential;
 
-public class AppUserDAO {
+public class AppUserDAO implements IAppUserDAO {
 
     private static final Connection conn = AppContext.getDBConnection();
-    private static AppUserDAO appUserDAO;
+    private static IAppUserDAO appUserDAO;
 
     private AppUserDAO() {
 
     }
 
-    public static AppUserDAO getInstance() {
+    public static IAppUserDAO getInstance() {
         if (appUserDAO == null) {
             appUserDAO = new AppUserDAO();
         }
         return appUserDAO;
     }
 
+    @Override
     public int registerUser(AppUser appuser) throws SQLException {
         String sql = "INSERT INTO app_user (name,email,password,mobile_number) VALUES (?,?,?,?) ";
         try (
@@ -47,6 +50,7 @@ public class AppUserDAO {
         }
     }
 
+    @Override
     public AppUser getUserById(int userId) throws SQLException {
         String sql = "SELECT * FROM app_user where user_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -62,6 +66,7 @@ public class AppUserDAO {
         return null;
     }
 
+    @Override
     public AppUser getUserByEmail(String email) throws SQLException {
         String sql = "SELECT * FROM app_user where LOWER(email) = LOWER(?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -77,6 +82,7 @@ public class AppUserDAO {
         return null;
     }
 
+    @Override
     public AppUser getUserByEmailAndPassword(String email, String password) throws SQLException {
         String sql = "SELECT * FROM app_user where LOWER(email) = LOWER(?) AND LOWER(password) = LOWER(?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -104,6 +110,7 @@ public class AppUserDAO {
     // }
     // return users;
     // }
+    @Override
     public boolean updateUser(AppUser user) throws SQLException {
         String sql = "UPDATE app_user set name = ?, password = ? WHERE user_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -115,6 +122,7 @@ public class AppUserDAO {
         }
     }
 
+    @Override
     public boolean deleteUser(int userId) throws SQLException {
         String sql = "DELETE FROM app_user WHERE user_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -123,6 +131,7 @@ public class AppUserDAO {
         }
     }
 
+    @Override
     public boolean resetPassword(String mobileNo, String password) throws SQLException {
         String sql = "UPDATE app_user SET password = ? WHERE mobile_number = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -132,6 +141,7 @@ public class AppUserDAO {
         }
     }
 
+    @Override
     public boolean userExists(String email) throws SQLException {
         String sql = "SELECT * FROM app_user WHERE email = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

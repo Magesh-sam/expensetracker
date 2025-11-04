@@ -17,6 +17,10 @@ import service.CategoryService;
 import service.PaymentService;
 import service.TransactionService;
 import controller.TransactionController;
+import interfaces.IAppUserDAO;
+import interfaces.ICategoryDAO;
+import interfaces.IPaymentMethodDAO;
+import interfaces.ITransactionService;
 import controller.CategoryController;
 import controller.PaymentController;
 
@@ -34,15 +38,15 @@ public class AppContext {
     }
 
     // dDAOs
-    public static AppUserDAO getAppUserDAO() {
+    public static IAppUserDAO getAppUserDAO() {
         return AppUserDAO.getInstance();
     }
 
-    public static CategoryDAO getCategoryDAO() {
+    public static ICategoryDAO getCategoryDAO() {
         return CategoryDAO.getInstance();
     }
 
-    public static PaymentMethodDAO getPaymentMethodDAO() {
+    public static IPaymentMethodDAO getPaymentMethodDAO() {
         return PaymentMethodDAO.getInstance();
     }
 
@@ -55,7 +59,7 @@ public class AppContext {
         return AppUserService.getInstance();
     }
 
-    public static TransactionService getTransactionService() {
+    public static ITransactionService getTransactionService() {
         return TransactionService.getInstance();
     }
 

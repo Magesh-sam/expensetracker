@@ -7,17 +7,18 @@ import exceptions.InvalidPasswordException;
 import exceptions.MobileNumberMismatchException;
 import exceptions.PasswordMismatchException;
 import exceptions.UserNotFoundException;
+import interfaces.IAppUserDAO;
 
 import java.sql.SQLException;
 import java.util.Objects;
-import model.dao.AppUserDAO;
+
 import model.dto.AppUser;
 import util.SecurityUtil;
 import util.Validation;
 
 public class AppUserService {
 
-    private static final AppUserDAO appUserDAO = AppContext.getAppUserDAO();
+    private static final IAppUserDAO appUserDAO = AppContext.getAppUserDAO();
     private static AppUserService appUserService;
 
     private AppUserService() {

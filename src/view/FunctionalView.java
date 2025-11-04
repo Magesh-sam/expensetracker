@@ -64,6 +64,7 @@ public class FunctionalView {
     }
 
     private void viewReports() {
+        printStats();
         listTopExpenses();
         listTopIncomes();
         listTopCategoriesByAmount();

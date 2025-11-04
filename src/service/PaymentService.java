@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Objects;
 
 import context.AppContext;
-import model.dao.PaymentMethodDAO;
+import interfaces.IPaymentMethodDAO;
 import model.dto.PaymentMethod;
 import util.Validation;
 
 public class PaymentService {
 
-    private static final PaymentMethodDAO paymentMethodDAO = AppContext.getPaymentMethodDAO();
+    private static final IPaymentMethodDAO paymentMethodDAO = AppContext.getPaymentMethodDAO();
     private static PaymentService paymentService;
 
     private PaymentService() {

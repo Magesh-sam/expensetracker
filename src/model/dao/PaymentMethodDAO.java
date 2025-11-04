@@ -1,6 +1,8 @@
 package model.dao;
 
 import context.AppContext;
+import interfaces.IPaymentMethodDAO;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,22 +12,23 @@ import java.util.ArrayList;
 import java.util.List;
 import model.dto.PaymentMethod;
 
-public class PaymentMethodDAO {
+public class PaymentMethodDAO implements IPaymentMethodDAO {
 
     private static final Connection conn = AppContext.getDBConnection();
-    private static PaymentMethodDAO paymentMethodDAO;
+    private static IPaymentMethodDAO paymentMethodDAO;
 
     private PaymentMethodDAO() {
 
     }
 
-    public static PaymentMethodDAO getInstance() {
+    public static IPaymentMethodDAO getInstance() {
         if (paymentMethodDAO == null) {
             paymentMethodDAO = new PaymentMethodDAO();
         }
         return paymentMethodDAO;
     }
 
+    @Override
     public int createPaymentMethod(PaymentMethod paymentMethod) throws SQLException {
         String sql = "INSERT INTO payment_method (name) VALUES (?) ";
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -40,6 +43,7 @@ public class PaymentMethodDAO {
         }
     }
 
+    @Override
     public PaymentMethod getPaymentMethodById(int paymentMethodId) throws SQLException {
         String sql = "SELECT * FROM payment_method WHERE payment_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -53,6 +57,7 @@ public class PaymentMethodDAO {
         return null;
     }
 
+    @Override
     public List<PaymentMethod> getAllPaymentMethods() throws SQLException {
         String sql = "SELECT * FROM payment_method";
         List<PaymentMethod> paymentMethods = new ArrayList<>();
@@ -64,6 +69,7 @@ public class PaymentMethodDAO {
         return paymentMethods;
     }
 
+    @Override
     public boolean updatePaymentMethod(PaymentMethod paymentMethod) throws SQLException {
         String sql = "UPDATE payment_method SET name = ? WHERE payment_method_id = ? ";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -73,6 +79,7 @@ public class PaymentMethodDAO {
         }
     }
 
+    @Override
     public boolean deletePaymentMethod(int paymentMethodId) throws SQLException {
         String sql = "DELETE FROM payment_method WHERE payment_method_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

@@ -7,10 +7,12 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+import interfaces.ITransactionService;
+
 public class TransactionController {
 
     private static TransactionController transactionController;
-    private static final TransactionService transactionService = TransactionService.getInstance();
+    private static final ITransactionService transactionService = TransactionService.getInstance();
 
     private TransactionController() {
     }

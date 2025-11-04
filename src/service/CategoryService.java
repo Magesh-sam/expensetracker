@@ -1,7 +1,7 @@
 package service;
 
 import context.AppContext;
-import model.dao.CategoryDAO;
+import interfaces.ICategoryDAO;
 import model.dto.Category;
 import util.Validation;
 
@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class CategoryService {
 
-    private static final CategoryDAO categoryDAO = AppContext.getCategoryDAO();
+    private static final ICategoryDAO categoryDAO = AppContext.getCategoryDAO();
     private static CategoryService categoryService;
 
     private CategoryService() {
