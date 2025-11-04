@@ -26,3 +26,5 @@ show income expenses remaining
 
 
 fix add expense out of bound excep when entered zero
+
+check for outofbound when listing item to let the user select. should be like this no>=1 && no<=size()
