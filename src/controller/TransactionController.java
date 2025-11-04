@@ -25,7 +25,7 @@ public class TransactionController {
     public int createTransaction(Transaction transaction) {
         try {
             return transactionService.createTransaction(transaction);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return -1;
@@ -34,8 +34,9 @@ public class TransactionController {
     public List<Transaction> getAllTransactionsByUserId(int userId) {
         try {
             return transactionService.getAllTransactionsByUserId(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
@@ -43,7 +44,8 @@ public class TransactionController {
     public List<Transaction> getExpensesByUserId(int userId) {
         try {
             return transactionService.getExpensesByUserId(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
         return null;
@@ -52,7 +54,7 @@ public class TransactionController {
     public List<Transaction> getIncomeByUserId(int userId) {
         try {
             return transactionService.getIncomeByUserId(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -61,7 +63,7 @@ public class TransactionController {
     public List<Transaction> getExpensesByCategory(int userId, int categoryId) {
         try {
             return transactionService.getExpensesByCategory(userId, categoryId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -70,7 +72,7 @@ public class TransactionController {
     public List<Transaction> getIncomeByCategory(int userId, int categoryId) {
         try {
             return transactionService.getIncomeByCategory(userId, categoryId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -79,7 +81,7 @@ public class TransactionController {
     public List<Transaction> getTransactionsByCategory(int userId, int categoryId) {
         try {
             return transactionService.getTransactionsByCategory(userId, categoryId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -88,7 +90,7 @@ public class TransactionController {
     public List<Transaction> getTopFiveTransactionsByAmount(int userId) {
         try {
             return transactionService.getTopFiveTransactionsByAmount(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -97,16 +99,25 @@ public class TransactionController {
     public List<CategoryAmount> getTopFiveCategoriesByAmount(int userId) {
         try {
             return transactionService.getTopFiveCategoriesByAmount(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
     }
 
-    public List<Transaction> getTransactionsByDate(int userId, LocalDate date) {
+    public List<Transaction> getExpenseByDate(int userId, LocalDate date) {
         try {
-            return transactionService.getTransactionsByDate(userId, date);
-        } catch (SQLException e) {
+            return transactionService.getExpensesByDate(userId, date);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Transaction> getIncomeByDate(int userId, LocalDate date) {
+        try {
+            return transactionService.getIncomeByDate(userId, date);
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -115,7 +126,7 @@ public class TransactionController {
     public List<Transaction> getTopFiveExpensesByAmount(int userId) {
         try {
             return transactionService.getTopFiveExpensesByAmount(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -124,7 +135,7 @@ public class TransactionController {
     public List<Transaction> getTopFiveIncomeByAmount(int userId) {
         try {
             return transactionService.getTopFiveIncomeByAmount(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -133,7 +144,7 @@ public class TransactionController {
     public List<CategoryAmount> getTopFiveExpenseCategoriesByAmount(int userId) {
         try {
             return transactionService.getTopFiveExpenseCategoriesByAmount(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -142,8 +153,30 @@ public class TransactionController {
     public List<CategoryAmount> getTopFiveIncomeCategoriesByAmount(int userId) {
         try {
             return transactionService.getTopFiveIncomeCategoriesByAmount(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Transaction> getExpenseTransactionsByDateRange(int userId, LocalDate start, LocalDate end) {
+        try {
+
+            return transactionService.getExpenseTransactionsByDateRange(userId, start, end);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return null;
+    }
+
+    public List<Transaction> getIncomeTransactionsByDateRange(int userId, LocalDate start, LocalDate end) {
+        try {
+
+            return transactionService.getIncomeTransactionsByDateRange(userId, start, end);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+
         }
         return null;
     }
@@ -151,7 +184,7 @@ public class TransactionController {
     public boolean updateTransaction(Transaction transaction) {
         try {
             return transactionService.updateTransaction(transaction);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return false;
@@ -160,9 +193,27 @@ public class TransactionController {
     public boolean deleteTransaction(int transactionId, int userId) {
         try {
             return transactionService.deleteTransaction(transactionId, userId);
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public int getTotalIncome(int userId) {
+        try {
+            return transactionService.getTotalIncome(userId);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+
+    public int getTotalExpense(int userId) {
+        try {
+            return transactionService.getTotalExpense(userId);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
 }

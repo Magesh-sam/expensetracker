@@ -5,6 +5,8 @@ import exceptions.InvalidEmailException;
 import exceptions.InvalidMobileNumberException;
 import exceptions.InvalidPasswordException;
 import exceptions.MobileNumberMismatchException;
+import exceptions.PasswordMismatchException;
+import exceptions.UserNotFoundException;
 
 import java.sql.SQLException;
 import java.util.Objects;
@@ -29,7 +31,8 @@ public class AppUserService {
         return appUserService;
     }
 
-    public int registerUser(AppUser appUser) throws SQLException, InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException {
+    public int registerUser(AppUser appUser)
+            throws SQLException, InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException {
 
         Objects.requireNonNull(appUser, "AppUser cannot be null");
         validateAppUser(appUser);
@@ -42,18 +45,29 @@ public class AppUserService {
         return appUserDAO.registerUser(appUser);
     }
 
-    public AppUser loginUser(String email, String password) throws SQLException, InvalidEmailException, InvalidPasswordException {
+    public AppUser loginUser(String email, String password)
+            throws SQLException, InvalidEmailException, InvalidPasswordException, PasswordMismatchException,UserNotFoundException {
         if (!Validation.isValidEmail(email)) {
             throw new InvalidEmailException("Email is not valid");
         }
         if (!Validation.isValidPassword(password)) {
             throw new InvalidPasswordException("Password is not valid");
         }
-        password = SecurityUtil.hashPassword(password);
-        return appUserDAO.getUserByEmailAndPassword(email, password);
+        AppUser user = appUserDAO.getUserByEmail(email);
+
+        if (user == null) {
+            throw new UserNotFoundException("User not found for email: " + email);
+        }
+
+        if (SecurityUtil.verifyPassword(password, user.getLoginCredential().getPassword())) {
+            return user;
+        } else {
+            throw new PasswordMismatchException("Password did not match");
+        }
     }
 
-    public boolean updateUser(AppUser appUser) throws SQLException, InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException {
+    public boolean updateUser(AppUser appUser)
+            throws SQLException, InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException {
         Objects.requireNonNull(appUser, "AppUser cannot be null");
         validateAppUser(appUser);
         return appUserDAO.updateUser(appUser);
@@ -84,10 +98,12 @@ public class AppUserService {
         if (!existingUser.getMobileNumber().equals(mobileNo)) {
             throw new IllegalArgumentException("Mobile number does not match");
         }
-        return appUserDAO.resetPassword(mobileNo, password);
+        String hashedPassword = SecurityUtil.hashPassword(password);
+        return appUserDAO.resetPassword(mobileNo, hashedPassword);
     }
 
-    public boolean checkEmailAndMobileNoMatch(String email, String mobileNo) throws SQLException, InvalidEmailException, InvalidMobileNumberException, MobileNumberMismatchException {
+    public boolean checkEmailAndMobileNoMatch(String email, String mobileNo)
+            throws SQLException, InvalidEmailException, InvalidMobileNumberException, MobileNumberMismatchException {
         if (!Validation.isValidEmail(email)) {
             throw new InvalidEmailException("Email is not valid");
         }
@@ -101,7 +117,8 @@ public class AppUserService {
         return existingUser.getMobileNumber().equals(mobileNo);
     }
 
-    private void validateAppUser(AppUser appUser) throws InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException {
+    private void validateAppUser(AppUser appUser)
+            throws InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException {
         if (!Validation.isNonEmpty(appUser.getName())) {
             throw new IllegalArgumentException("Name cannot be empty");
         }

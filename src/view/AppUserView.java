@@ -48,9 +48,16 @@ public class AppUserView {
     private void login() {
         String email = Input.getEmail();
         String password = Input.getPassword();
-        appUserController.login(email, password);
-        System.out.println("User logged in Successfully!");
-        AppContext.getFunctionalView().displayMenu();
+        AppUser user = appUserController.login(email, password);
+        if (user != null) {
+            
+            if (AppContext.getCurrentUser() == null) {
+                
+                AppContext.setCurrentUser(user);
+                System.out.println("Welcome, " + user.getName());
+                AppContext.getFunctionalView().displayMenu();
+            }
+        }
 
     }
 

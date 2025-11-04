@@ -5,6 +5,9 @@ import exceptions.InvalidEmailException;
 import exceptions.InvalidMobileNumberException;
 import exceptions.InvalidPasswordException;
 import exceptions.MobileNumberMismatchException;
+import exceptions.PasswordMismatchException;
+import exceptions.UserNotFoundException;
+
 import java.sql.SQLException;
 import model.dto.AppUser;
 import service.AppUserService;
@@ -36,7 +39,8 @@ public class AppUserController {
     public AppUser login(String email, String password) {
         try {
             return appUserService.loginUser(email, password);
-        } catch (SQLException | InvalidEmailException | InvalidPasswordException e) {
+        } catch (SQLException | InvalidEmailException | InvalidPasswordException | PasswordMismatchException
+                | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -72,7 +76,8 @@ public class AppUserController {
     public boolean checkEmailAndMobileNoMatch(String email, String mobileNo) {
         try {
             return appUserService.checkEmailAndMobileNoMatch(email, mobileNo);
-        } catch (SQLException | InvalidEmailException | InvalidMobileNumberException | MobileNumberMismatchException e) {
+        } catch (SQLException | InvalidEmailException | InvalidMobileNumberException
+                | MobileNumberMismatchException e) {
             System.out.println(e.getMessage());
         }
         return false;

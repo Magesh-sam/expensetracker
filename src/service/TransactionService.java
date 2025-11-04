@@ -1,10 +1,10 @@
 package service;
 
-import context.AppContext;
 import model.dao.TransactionDAO;
 import model.dto.CategoryAmount;
 import model.dto.Transaction;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -27,6 +27,7 @@ public class TransactionService {
 
     public int createTransaction(Transaction transaction) throws SQLException {
         Objects.requireNonNull(transaction, "Transaction cannot be null");
+
         return transactionDAO.createTransaction(transaction);
     }
 
@@ -63,10 +64,16 @@ public class TransactionService {
         return transactionDAO.getIncomeByCategory(userId, categoryId);
     }
 
-    public List<Transaction> getTransactionsByDate(int userId, LocalDate date) throws SQLException {
+    public List<Transaction> getExpensesByDate(int userId, LocalDate date) throws SQLException {
         validateUserId(userId);
         Objects.requireNonNull(date, "Date cannot be null");
-        return transactionDAO.getTransactionsByDate(userId, date);
+        return transactionDAO.getExpensesByDate(userId, date);
+    }
+
+    public List<Transaction> getIncomeByDate(int userId, LocalDate date) throws SQLException {
+        validateUserId(userId);
+        Objects.requireNonNull(date, "Date cannot be null");
+        return transactionDAO.getIncomeByDate(userId, date);
     }
 
     public List<Transaction> getTopFiveTransactionsByAmount(int userId) throws SQLException {
@@ -99,8 +106,23 @@ public class TransactionService {
         return transactionDAO.getTopFiveIncomeCategoriesByAmount(userId);
     }
 
+    public List<Transaction> getExpenseTransactionsByDateRange(int userId, LocalDate start, LocalDate end)
+            throws SQLException {
+        validateUserId(userId);
+
+        return transactionDAO.getExpenseTransactionsByDateRange(userId, start, end);
+    }
+
+    public List<Transaction> getIncomeTransactionsByDateRange(int userId, LocalDate start, LocalDate end)
+            throws SQLException {
+        validateUserId(userId);
+
+        return transactionDAO.getIncomeTransactionsByDateRange(userId, start, end);
+    }
+
     public boolean updateTransaction(Transaction transaction) throws SQLException {
         Objects.requireNonNull(transaction, "Transaction cannot be null");
+        validateTransaction(transaction);
         return transactionDAO.updateTransaction(transaction);
     }
 
@@ -108,6 +130,18 @@ public class TransactionService {
         validateTransactionId(transactionId);
         validateUserId(userId);
         return transactionDAO.deleteTransaction(transactionId, userId);
+    }
+
+    public int getTotalIncome(int userId) throws SQLException {
+        validateUserId(userId);
+        return transactionDAO.getTotalIncome(userId);
+
+    }
+
+    public int getTotalExpense(int userId) throws SQLException {
+        validateUserId(userId);
+        return transactionDAO.getTotalExpense(userId);
+
     }
 
     private void validateUserId(int userId) {
@@ -126,5 +160,44 @@ public class TransactionService {
         if (transactionId <= 0) {
             throw new IllegalArgumentException("Invalid transaction id");
         }
+    }
+
+    private void validatePaymentMethodId(int paymentMethodId) {
+        if (paymentMethodId <= 0) {
+            throw new IllegalArgumentException("Invalid Payment Method id");
+
+        }
+    }
+
+    private void validateAmount(BigDecimal amount) {
+        if (amount.doubleValue() < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
+
+    }
+
+    private void validateTransactionStatus(Transaction.TransactionType transactionType) {
+        Objects.requireNonNull(transactionType, "Transaction type caanot be null");
+
+        switch (transactionType) {
+            case income:
+            case expense:
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported transaction type: " + transactionType);
+        }
+    }
+
+    private void validateTransaction(Transaction transaction) {
+        if (transaction.getTransactionId() <= 0) {
+            throw new IllegalArgumentException("Invalid Transaction id");
+        }
+
+        validateUserId(transaction.getAppuserId());
+        validateCategoryId(transaction.getCategoryId());
+        validatePaymentMethodId(transaction.getPaymentMethodId());
+        validateAmount(transaction.getAmount());
+        validateTransactionStatus(transaction.getTransactionType());
+
     }
 }

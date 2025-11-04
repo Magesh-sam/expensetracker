@@ -1,5 +1,6 @@
 package util;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 import exceptions.InvalidEmailException;
@@ -67,6 +68,19 @@ public class Input {
         }
     }
 
+    public static BigDecimal getBigDecimal(String label) {
+        while (true) {
+            System.out.print("Enter " + label + ": ");
+            try {
+                String input = scanner.nextLine().trim();
+                BigDecimal result = new BigDecimal(input);
+                return result;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid decimal number.");
+            }
+        }
+    }
+
     public static String getEmail() {
         while (true) {
             System.out.print("Enter email: ");
@@ -83,7 +97,8 @@ public class Input {
     }
 
     public static String getPassword() {
-        System.out.println("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and no special character.");
+        System.out.println(
+                "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and no special character.");
         while (true) {
             System.out.print("Enter password: ");
             try {

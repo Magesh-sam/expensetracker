@@ -43,9 +43,6 @@ public class CategoryService {
 
     public boolean updateCategory(Category category) throws SQLException {
         Objects.requireNonNull(category, "Category cannot be null");
-        if (category.getId() <= 0) {
-            throw new IllegalArgumentException("Invalid category id");
-        }
         validateCategory(category);
         return categoryDAO.updateCategory(category);
     }
@@ -61,6 +58,10 @@ public class CategoryService {
         Objects.requireNonNull(category, "Category cannot be null");
         if (!Validation.isNonEmpty(category.getName())) {
             throw new IllegalArgumentException("Category name cannot be empty");
+        }
+        if (category.getCategoryId() <= 0) {
+            throw new IllegalArgumentException("Invalid Category Id");
+
         }
     }
 }

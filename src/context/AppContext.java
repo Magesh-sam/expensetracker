@@ -6,26 +6,34 @@ import model.dao.AppUserDAO;
 import model.dao.CategoryDAO;
 import model.dao.PaymentMethodDAO;
 import model.dao.TransactionDAO;
-import model.dto.Transaction;
+import model.dto.AppUser;
 import service.AppUserService;
 import util.DBConfig;
 import view.AppUserView;
 import view.ExpenseView;
 import view.FunctionalView;
 import view.IncomeView;
+import service.CategoryService;
+import service.PaymentService;
+import service.TransactionService;
+import controller.TransactionController;
+import controller.CategoryController;
+import controller.PaymentController;
 
 public class AppContext {
 
     private AppContext() {
     }
 
-    //db connections
+    private static AppUser currentUser = null;
+
+    // db connections
     public static Connection getDBConnection() {
         return DBConfig.getInstance();
 
     }
 
-    //dDAOs
+    // dDAOs
     public static AppUserDAO getAppUserDAO() {
         return AppUserDAO.getInstance();
     }
@@ -42,7 +50,7 @@ public class AppContext {
         return TransactionDAO.getInstance();
     }
 
-    //services
+    // services
     public static AppUserService getAppUserService() {
         return AppUserService.getInstance();
     }
@@ -55,7 +63,11 @@ public class AppContext {
         return CategoryService.getInstance();
     }
 
-    //controllers
+    public static PaymentService getPaymentService() {
+        return PaymentService.getInstance();
+    }
+
+    // controllers
     public static AppUserController getAppUserController() {
         return AppUserController.getInstance();
     }
@@ -68,7 +80,11 @@ public class AppContext {
         return CategoryController.getInstance();
     }
 
-    //views
+    public static PaymentController getPaymentController() {
+        return PaymentController.getInstance();
+    }
+
+    // views
     public static AppUserView getAppUserView() {
         return AppUserView.getInstance();
     }
@@ -84,4 +100,13 @@ public class AppContext {
     public static IncomeView getIncomeView() {
         return IncomeView.getInstance();
     }
+
+    public static AppUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(AppUser currentUser) {
+        AppContext.currentUser = currentUser;
+    }
+
 }

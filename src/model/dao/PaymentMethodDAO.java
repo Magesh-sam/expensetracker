@@ -26,7 +26,7 @@ public class PaymentMethodDAO {
         return paymentMethodDAO;
     }
 
-    public int createPayementMethod(PaymentMethod paymentMethod) throws SQLException {
+    public int createPaymentMethod(PaymentMethod paymentMethod) throws SQLException {
         String sql = "INSERT INTO payment_method (name) VALUES (?) ";
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, paymentMethod.getName());

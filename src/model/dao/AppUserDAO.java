@@ -86,11 +86,11 @@ public class AppUserDAO {
                 if (rs.next()) {
                     return map(rs);
                 }
+                return null;
 
             }
 
         }
-        return null;
     }
 
     // public List<AppUser> getAllUsers() throws SQLException {
@@ -126,8 +126,8 @@ public class AppUserDAO {
     public boolean resetPassword(String mobileNo, String password) throws SQLException {
         String sql = "UPDATE app_user SET password = ? WHERE mobile_number = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, mobileNo);
-            pstmt.setString(2, password);
+            pstmt.setString(1, password);
+            pstmt.setString(2, mobileNo);
             return pstmt.executeUpdate() > 0;
         }
     }

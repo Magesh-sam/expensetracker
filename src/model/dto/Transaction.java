@@ -9,6 +9,7 @@ public class Transaction {
         expense, income
     }
 
+    private String name;
     private int appUserId;
     private int transactionId;
     private int categoryId;
@@ -18,7 +19,7 @@ public class Transaction {
     private LocalDateTime createdAt;
 
     public Transaction(int transactionId, int categoryId, int appUserId, int paymentMethodId, BigDecimal amount,
-            TransactionType transactionType, LocalDateTime createdAt) {
+            TransactionType transactionType, LocalDateTime createdAt, String name) {
         this.transactionId = transactionId;
         this.categoryId = categoryId;
         this.appUserId = appUserId;
@@ -26,16 +27,18 @@ public class Transaction {
         this.amount = amount;
         this.transactionType = transactionType;
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
+        this.name = name;
     }
 
     public Transaction(int categoryId, int appUserId, int paymentMethodId, BigDecimal amount,
-            TransactionType transactionType, LocalDateTime createdAt) {
+            TransactionType transactionType, LocalDateTime createdAt, String name) {
         this.categoryId = categoryId;
         this.appUserId = appUserId;
         this.paymentMethodId = paymentMethodId;
         this.amount = amount;
         this.transactionType = transactionType;
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
+        this.name = name;
     }
 
     public Transaction(BigDecimal amount, TransactionType transactionType, LocalDateTime createdAt) {
@@ -101,6 +104,22 @@ public class Transaction {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAppUserId() {
+        return appUserId;
+    }
+
+    public void setAppUserId(int appUserId) {
+        this.appUserId = appUserId;
     }
 
 }

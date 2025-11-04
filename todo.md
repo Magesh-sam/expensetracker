@@ -19,4 +19,6 @@ income input -> amount, income category (optional eg:salary, freelance, bonus, e
 
 - manage income -> list all income, add/update/delete income, filter
 - manage Expense -> list all expense, add/update/delete expense, filter
-- manage category
+
+
+show income expenses remaining
