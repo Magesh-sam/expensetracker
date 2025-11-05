@@ -48,7 +48,8 @@ public class AppUserController {
     public boolean updateUser(AppUser appUser) {
         try {
             return appUserService.updateUser(appUser);
-        } catch (SQLException | InvalidEmailException | InvalidPasswordException | InvalidMobileNumberException e) {
+        } catch (SQLException | InvalidEmailException | InvalidPasswordException | InvalidMobileNumberException
+                | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
         return false;
@@ -57,7 +58,7 @@ public class AppUserController {
     public boolean deleteUser(int userId) {
         try {
             return appUserService.deleteUser(userId);
-        } catch (SQLException e) {
+        } catch (SQLException | UserNotFoundException e) {
             System.out.println(e.getMessage());
         }
         return false;

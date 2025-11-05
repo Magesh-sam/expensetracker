@@ -4,7 +4,8 @@ import java.util.regex.Pattern;
 
 public class Validation {
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+    private static final Pattern EMAIL_PATTERN = Pattern
+            .compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
     private static final Pattern MOBILE_PATTERN = Pattern.compile("^\\d{10}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
 
@@ -52,6 +53,13 @@ public class Validation {
     public static void requireValidPassword(String password) throws IllegalArgumentException {
         if (!isValidPassword(password)) {
             throw new IllegalArgumentException("Password is not valid");
+        }
+    }
+
+    public static void validateId(String label, int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException("Invalid " + label + " id");
+
         }
     }
 }

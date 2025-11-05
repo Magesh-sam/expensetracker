@@ -74,6 +74,20 @@ public class CategoryDAO implements ICategoryDAO {
     }
 
     @Override
+    public boolean categoryExists(String category) throws SQLException {
+        String sql = "  SELECT * FROM category where lower(name) = lower(?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, category);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean updateCategory(Category category) throws SQLException {
         String sql = "UPDATE category SET name = ? WHERE category_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

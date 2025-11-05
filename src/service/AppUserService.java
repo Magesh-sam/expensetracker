@@ -45,7 +45,8 @@ public class AppUserService {
     }
 
     public AppUser loginUser(String email, String password)
-            throws SQLException, InvalidEmailException, InvalidPasswordException, PasswordMismatchException, UserNotFoundException {
+            throws SQLException, InvalidEmailException, InvalidPasswordException, PasswordMismatchException,
+            UserNotFoundException {
         if (!Validation.isValidEmail(email)) {
             throw new InvalidEmailException("Email is not valid");
         }
@@ -66,15 +67,24 @@ public class AppUserService {
     }
 
     public boolean updateUser(AppUser appUser)
-            throws SQLException, InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException {
+            throws SQLException, InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException,
+            UserNotFoundException {
         Objects.requireNonNull(appUser, "AppUser cannot be null");
         validateAppUser(appUser);
+        AppUser existing = appUserDAO.getUserById(appUser.getUserId());
+        if (existing == null) {
+            throw new UserNotFoundException("User Not Found with user id: " + appUser.getUserId());
+        }
+        String hashedPassword = SecurityUtil.hashPassword(appUser.getLoginCredential().getPassword());
+        appUser.getLoginCredential().setPassword(hashedPassword);
         return appUserDAO.updateUser(appUser);
     }
 
-    public boolean deleteUser(int userId) throws SQLException {
-        if (userId <= 0) {
-            throw new IllegalArgumentException("Invalid user id");
+    public boolean deleteUser(int userId) throws SQLException, UserNotFoundException {
+        Validation.validateId("User", userId);
+        AppUser existing = appUserDAO.getUserById(userId);
+        if (existing == null) {
+            throw new UserNotFoundException("User Not Found with user id: " + userId);
         }
         return appUserDAO.deleteUser(userId);
     }
@@ -117,7 +127,7 @@ public class AppUserService {
     }
 
     public AppUser getUserBYMobileNumber(String mobileNo) throws SQLException, InvalidMobileNumberException {
-        
+
         if (!Validation.isValidMobileNo(mobileNo)) {
             throw new InvalidMobileNumberException("Mobile number is not valid");
         }

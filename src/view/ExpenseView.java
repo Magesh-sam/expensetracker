@@ -73,7 +73,7 @@ public class ExpenseView {
         String expenseName = Input.getString("expense title");
         System.out.println("Select Category");
         List<Category> categories = AppContext.getCategoryController().getAllCategories();
-        printCategoryList(categories);
+        Print.printCategoryList(categories);
 
         int choice;
         while (true) {
@@ -90,7 +90,7 @@ public class ExpenseView {
         choice = 0;
         List<PaymentMethod> paymentMethods = AppContext.getPaymentController().getAllPaymentMethods();
 
-        printPaymentMethodList(paymentMethods);
+        Print.printPaymentMethodList(paymentMethods);
         System.out.println("Select Payment Method");
         while (true) {
             choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
@@ -138,7 +138,7 @@ public class ExpenseView {
         System.out.println("press enter/0 to keep the values unchanged");
         System.out.println("Select Category");
         List<Category> categories = AppContext.getCategoryController().getAllCategories();
-        printCategoryList(categories);
+        Print.printCategoryList(categories);
 
         while (true) {
             choice = Input.getInt("Payment method number (1-" + categories.size() + ")");
@@ -155,7 +155,7 @@ public class ExpenseView {
         choice = 0;
         List<PaymentMethod> paymentMethods = AppContext.getPaymentController().getAllPaymentMethods();
 
-        printPaymentMethodList(paymentMethods);
+        Print.printPaymentMethodList(paymentMethods);
         System.out.println("Select Payment Method");
         while (true) {
             choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
@@ -220,7 +220,7 @@ public class ExpenseView {
         System.out.println("=== Expenses by Category ===");
         System.out.println("Select Category");
         List<Category> categories = AppContext.getCategoryController().getAllCategories();
-        printCategoryList(categories);
+        Print.printCategoryList(categories);
 
         int choice;
         while (true) {
@@ -307,19 +307,5 @@ public class ExpenseView {
 
     }
 
-    private void printCategoryList(List<Category> categories) {
-        System.out.println("Category List:");
-        for (int i = 0; i < categories.size(); i++) {
-            System.out.println((i + 1) + "." + categories.get(i).getName());
-        }
-
-    }
-
-    private void printPaymentMethodList(List<PaymentMethod> paymentMethods) {
-        System.out.println("Payment Type List:");
-        for (int i = 0; i < paymentMethods.size(); i++) {
-            System.out.println((i + 1) + "." + paymentMethods.get(i).getName());
-        }
-
-    }
+   
 }

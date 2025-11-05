@@ -11,6 +11,7 @@ import model.dto.Transaction;
 import model.dto.Transaction.TransactionType;
 import model.dto.PaymentMethod;
 import util.Input;
+import util.Print;
 
 public class IncomeView {
 
@@ -64,12 +65,12 @@ public class IncomeView {
         String incomeName = Input.getString("income title");
         System.out.println("Select Category");
         List<Category> categories = AppContext.getCategoryController().getAllCategories();
-        printCategoryList(categories);
+        Print.printCategoryList(categories);
 
         int choice;
         while (true) {
             choice = Input.getInt("Payment method number (1-" + categories.size() + ")");
-            if (choice >= 1 || choice <= categories.size()) {
+            if (choice >= 1 && choice <= categories.size()) {
 
                 break;
             }
@@ -81,11 +82,11 @@ public class IncomeView {
         choice = 0;
         List<PaymentMethod> paymentMethods = AppContext.getPaymentController().getAllPaymentMethods();
 
-        printPaymentMethodList(paymentMethods);
+        Print.printPaymentMethodList(paymentMethods);
         System.out.println("Select Payment Method");
         while (true) {
             choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
-            if (choice >= 1 || choice <= paymentMethods.size()) {
+            if (choice >= 1 && choice <= paymentMethods.size()) {
 
                 break;
             }
@@ -116,7 +117,7 @@ public class IncomeView {
             return;
         }
 
-        displayTransactionList(incomes);
+        Print.displayTransactionList(incomes);
         int choice = Input.getInt("income number to edit (1-" + incomes.size() + ")");
 
         if (choice < 1 || choice > incomes.size()) {
@@ -129,11 +130,11 @@ public class IncomeView {
         System.out.println("press enter/0 to keep the values unchanged");
         System.out.println("Select Category");
         List<Category> categories = AppContext.getCategoryController().getAllCategories();
-        printCategoryList(categories);
+        Print.printCategoryList(categories);
 
         while (true) {
             choice = Input.getInt("category number (1-" + categories.size() + ")");
-            if (choice >= 0 || choice <= categories.size()) {
+            if (choice >= 0 && choice <= categories.size()) {
 
                 break;
             }
@@ -146,11 +147,11 @@ public class IncomeView {
         choice = 0;
         List<PaymentMethod> paymentMethods = AppContext.getPaymentController().getAllPaymentMethods();
 
-        printPaymentMethodList(paymentMethods);
+        Print.printPaymentMethodList(paymentMethods);
         System.out.println("Select Payment Method");
         while (true) {
             choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
-            if (choice >= 0 || choice <= paymentMethods.size()) {
+            if (choice >= 0 && choice <= paymentMethods.size()) {
 
                 break;
             }
@@ -181,7 +182,7 @@ public class IncomeView {
             return;
         }
 
-        displayTransactionList(incomes);
+        Print.displayTransactionList(incomes);
         int choice = Input.getInt("income number to delete (1-" + incomes.size() + ")");
 
         if (choice < 1 || choice > incomes.size()) {
@@ -204,14 +205,14 @@ public class IncomeView {
             System.out.println("No incomes found.");
             return;
         }
-        displayTransactionList(incomes);
+        Print.displayTransactionList(incomes);
     }
 
     private void listIncomeByCategory() {
         System.out.println("=== Incomes by Category ===");
         System.out.println("Select Category");
         List<Category> categories = AppContext.getCategoryController().getAllCategories();
-        printCategoryList(categories);
+        Print.printCategoryList(categories);
 
         int choice;
         while (true) {
@@ -230,7 +231,7 @@ public class IncomeView {
             System.out.println("No incomes found for this category.");
             return;
         }
-        displayTransactionList(incomes);
+        Print.displayTransactionList(incomes);
     }
 
     private void listIncomeByDateRange() {
@@ -252,7 +253,7 @@ public class IncomeView {
                 return;
             }
 
-            displayTransactionList(incomeTransactionsByDateRange);
+            Print.displayTransactionList(incomeTransactionsByDateRange);
         } catch (Exception e) {
             System.out.println("Invalid date format. Please use YYYY-MM-DD.");
         }
@@ -271,34 +272,10 @@ public class IncomeView {
                 return;
             }
 
-            displayTransactionList(incomes);
+            Print.displayTransactionList(incomes);
         } catch (Exception e) {
             System.out.println("Invalid date format. Please use YYYY-MM-DD.");
         }
     }
 
-    private void displayTransactionList(List<Transaction> transactions) {
-
-        for (int i = 0; i < transactions.size(); i++) {
-            System.out
-                    .println((i + 1) + " | " + transactions.get(i).getName() + " | " + transactions.get(i).getAmount());
-        }
-
-    }
-
-    private void printCategoryList(List<Category> categories) {
-        System.out.println("Category List:");
-        for (int i = 0; i < categories.size(); i++) {
-            System.out.println((i + 1) + "." + categories.get(i).getName());
-        }
-
-    }
-
-    private void printPaymentMethodList(List<PaymentMethod> paymentMethods) {
-        System.out.println("Payment Type List:");
-        for (int i = 0; i < paymentMethods.size(); i++) {
-            System.out.println((i + 1) + "." + paymentMethods.get(i).getName());
-        }
-
-    }
 }

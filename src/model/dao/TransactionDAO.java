@@ -64,6 +64,7 @@ public class TransactionDAO {
         return transactions;
     }
 
+
     public List<Transaction> getExpensesByUserId(int userId) throws SQLException {
         return getTransactionsByUserIdAndType(userId, Transaction.TransactionType.expense);
     }
@@ -306,6 +307,7 @@ public class TransactionDAO {
         }
         return 0;
     }
+
     public int getTotalExpense(int userId) throws SQLException {
         String sql = "SELECT SUM(amount) total_income FROM transaction_tracker WHERE app_user_id = ? AND transaction_type = 'expense'";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

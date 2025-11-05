@@ -30,13 +30,16 @@ public class FunctionalView {
         int choice;
 
         while (true) {
-            System.out.println("1. Manage Expenses\n2. Manage Incomes\n3. View Reports\n4. Update Profile\n 5. Delete User\n6. Exit");
+            System.out.println(
+                    "1. Manage Expenses\n2. Manage Incomes\n3. View Reports\n4. Update Profile\n 5. Delete User\n6. Exit");
             choice = Input.getInt("choice");
             switch (choice) {
                 case 1 -> {
+                    printStats();
                     manageExpenses();
                 }
                 case 2 -> {
+                    printStats();
                     manageIncomes();
                 }
                 case 3 -> {
@@ -60,17 +63,18 @@ public class FunctionalView {
     }
 
     private void manageExpenses() {
-        System.out.println("Manage Expenses");
+        System.out.println("===Expense Management===");
         AppContext.getExpenseView().displayMenu();
     }
 
     private void manageIncomes() {
-        System.out.println("Manage Incomes");
+        System.out.println("===Income Management===");
         AppContext.getIncomeView().displayMenu();
 
     }
 
     private void viewReports() {
+        System.out.println("===Reports===");
         printStats();
         listTopExpenses();
         listTopIncomes();
@@ -127,24 +131,11 @@ public class FunctionalView {
         System.out.println("Name: " + user.getName());
         System.out.println("Mobile Number: " + user.getMobileNumber());
         System.out.println("Email: " + user.getLoginCredential().getEmail());
-        System.out.println("Password: " + user.getLoginCredential().getPassword());
-        System.out.println("Email Cannot be changed");
+        System.out.println("Email/Mobile Number Cannot be changed");
         String name = Input.getString("Name");
-        String mobileNo;
-        while (true) {
-
-            mobileNo = Input.getMobileNo();
-            AppUser existingUser = AppContext.getAppUserController().getUserByMobileNumber(mobileNo);
-            if (existingUser != null && existingUser.getUserId() != user.getUserId()) {
-                System.out.println("Mobile number already exists");
-            } else {
-                break;
-            }
-        }
 
         String password = Input.getPassword();
         user.setName(name);
-        user.setMobileNumber(mobileNo);
         user.getLoginCredential().setPassword(password);
         AppContext.getAppUserController().updateUser(user);
         System.out.println("Profile Updated Successfully!");

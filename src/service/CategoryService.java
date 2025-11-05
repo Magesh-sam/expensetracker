@@ -27,13 +27,15 @@ public class CategoryService {
     public int createCategory(Category category) throws SQLException {
         Objects.requireNonNull(category, "Category cannot be null");
         validateCategory(category);
+        if (categoryDAO.categoryExists(category.getName())) {
+            throw new IllegalArgumentException("Category Already Exists");
+        }
         return categoryDAO.createCategory(category);
     }
 
     public Category getCategoryById(int categoryId) throws SQLException {
-        if (categoryId <= 0) {
-            throw new IllegalArgumentException("Invalid category id");
-        }
+        Validation.validateId("Category", categoryId);
+
         return categoryDAO.getCategoryById(categoryId);
     }
 
@@ -44,12 +46,20 @@ public class CategoryService {
     public boolean updateCategory(Category category) throws SQLException {
         Objects.requireNonNull(category, "Category cannot be null");
         validateCategory(category);
+        Category exsisting = categoryDAO.getCategoryById(category.getCategoryId());
+        if (exsisting == null) {
+            throw new IllegalArgumentException("Update Failed. Category does not exist");
+        }
+
         return categoryDAO.updateCategory(category);
     }
 
     public boolean deleteCategory(int categoryId) throws SQLException {
-        if (categoryId <= 0) {
-            throw new IllegalArgumentException("Invalid category id");
+        Validation.validateId("Category", categoryId);
+
+        Category exsisting = categoryDAO.getCategoryById(categoryId);
+        if (exsisting == null) {
+            throw new IllegalArgumentException("Delete Failed. Category does not exist");
         }
         return categoryDAO.deleteCategory(categoryId);
     }
@@ -59,9 +69,7 @@ public class CategoryService {
         if (!Validation.isNonEmpty(category.getName())) {
             throw new IllegalArgumentException("Category name cannot be empty");
         }
-        if (category.getCategoryId() <= 0) {
-            throw new IllegalArgumentException("Invalid Category Id");
-
-        }
+        Validation.validateId("Category", category.getCategoryId());
     }
+
 }
