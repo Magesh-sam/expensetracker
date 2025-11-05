@@ -42,7 +42,7 @@ public class TransactionDAO {
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1);
+                    return rs.getInt("id");
                 }
                 throw new SQLException("Transaction creation failed. No ID obtained");
             }
@@ -63,7 +63,6 @@ public class TransactionDAO {
         }
         return transactions;
     }
-
 
     public List<Transaction> getExpensesByUserId(int userId) throws SQLException {
         return getTransactionsByUserIdAndType(userId, Transaction.TransactionType.expense);

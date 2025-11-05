@@ -51,7 +51,7 @@ public class AppUserDAO implements IAppUserDAO {
 
     @Override
     public AppUser getUserById(int userId) throws SQLException {
-        String sql = "SELECT * FROM app_user where user_id = ?";
+        String sql = "SELECT * FROM app_user where id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setInt(1, userId);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -127,11 +127,12 @@ public class AppUserDAO implements IAppUserDAO {
     // }
     @Override
     public boolean updateUser(AppUser user) throws SQLException {
-        String sql = "UPDATE app_user set name = ?, password = ? WHERE user_id = ?";
+        String sql = "UPDATE app_user set name = ?, email = ?, mobile_number mobile WHERE id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getName());
-            pstmt.setString(2, user.getLoginCredential().getPassword());
-            pstmt.setInt(3, user.getUserId());
+            pstmt.setString(2, user.getLoginCredential().getEmail());
+            pstmt.setString(3, user.getMobileNumber());
+            pstmt.setInt(4, user.getUserId());
             return pstmt.executeUpdate() > 0;
 
         }
@@ -139,7 +140,7 @@ public class AppUserDAO implements IAppUserDAO {
 
     @Override
     public boolean deleteUser(int userId) throws SQLException {
-        String sql = "DELETE FROM app_user WHERE user_id = ?";
+        String sql = "DELETE FROM app_user WHERE id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             return pstmt.executeUpdate() > 0;
@@ -154,6 +155,17 @@ public class AppUserDAO implements IAppUserDAO {
             pstmt.setString(2, mobileNo);
             return pstmt.executeUpdate() > 0;
         }
+    }
+
+    @Override
+    public boolean changePassword(int userId, String newPassword) throws SQLException {
+        String sql = "UPDATE app_user SET password = ? WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newPassword);
+            pstmt.setInt(2, userId);
+            return pstmt.executeUpdate() > 0;
+        }
+
     }
 
     @Override

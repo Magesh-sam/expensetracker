@@ -28,15 +28,17 @@ create Table payment_method (
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
-CREATE Table transaction_tracker (
+CREATE TABLE transaction_tracker (
+    name VARCHAR(255) NOT NULL,
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     amount DECIMAL(10, 2),
-    category_id INT REFERENCES category (id) NOT NULL,
-    app_user_id INT REFERENCES app_user (id) NOT NULL,
-    payment_method_id INT REFERENCES payment_method (id) NOT NULL,
-    transaction_type VARCHAR(255) NOT NULL,
+    category_id INT REFERENCES category (id) ON DELETE SET NULL,
+    app_user_id INT REFERENCES app_user (id) ON DELETE CASCADE,
+    payment_method_id INT REFERENCES payment_method (id) ON DELETE SET NULL,
+    transaction_type transaction_type  NOT NULL,
     created_at TIMESTAMP NOT NULL
 );
+
 
 INSERT INTO
     payment_method (name)

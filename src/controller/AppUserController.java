@@ -51,8 +51,9 @@ public class AppUserController {
         } catch (SQLException | InvalidEmailException | InvalidPasswordException | InvalidMobileNumberException
                 | UserNotFoundException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public boolean deleteUser(int userId) {
@@ -60,8 +61,17 @@ public class AppUserController {
             return appUserService.deleteUser(userId);
         } catch (SQLException | UserNotFoundException e) {
             System.out.println(e.getMessage());
+            return false;
         }
-        return false;
+    }
+
+    public boolean changePassword(int userId, String password) {
+        try {
+            return appUserService.changePassword(userId, password);
+        } catch (SQLException | InvalidPasswordException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
     public boolean resetPassword(String mobileNo, String email, String password) {

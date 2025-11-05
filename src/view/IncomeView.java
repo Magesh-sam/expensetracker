@@ -69,7 +69,7 @@ public class IncomeView {
 
         int choice;
         while (true) {
-            choice = Input.getInt("Payment method number (1-" + categories.size() + ")");
+            choice = Input.getInt("Category number (1-" + categories.size() + ")");
             if (choice >= 1 && choice <= categories.size()) {
 
                 break;

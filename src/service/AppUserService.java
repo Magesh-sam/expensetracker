@@ -70,7 +70,17 @@ public class AppUserService {
             throws SQLException, InvalidEmailException, InvalidPasswordException, InvalidMobileNumberException,
             UserNotFoundException {
         Objects.requireNonNull(appUser, "AppUser cannot be null");
-        validateAppUser(appUser);
+        if (!Validation.isNonEmpty(appUser.getName())) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+
+        if (!Validation.isValidEmail(appUser.getLoginCredential().getEmail())) {
+            throw new InvalidEmailException("Email is not valid. Email: " + appUser.getLoginCredential().getEmail());
+        }
+
+        if (!Validation.isValidMobileNo(appUser.getMobileNumber())) {
+            throw new InvalidMobileNumberException("Mobile number is not valid");
+        }
         AppUser existing = appUserDAO.getUserById(appUser.getUserId());
         if (existing == null) {
             throw new UserNotFoundException("User Not Found with user id: " + appUser.getUserId());
@@ -87,6 +97,15 @@ public class AppUserService {
             throw new UserNotFoundException("User Not Found with user id: " + userId);
         }
         return appUserDAO.deleteUser(userId);
+    }
+
+    public boolean changePassword(int userId, String password) throws SQLException, InvalidPasswordException {
+        Validation.validateId("user", userId);
+        if (!Validation.isValidPassword(password)) {
+            throw new InvalidPasswordException("Invalid Password");
+        }
+        String hashedPassword = SecurityUtil.hashPassword(password);
+        return appUserDAO.changePassword(userId, hashedPassword);
     }
 
     public boolean resetPassword(String mobileNo, String email, String password)
@@ -149,10 +168,11 @@ public class AppUserService {
         }
 
         if (!Validation.isValidEmail(appUser.getLoginCredential().getEmail())) {
-            throw new InvalidEmailException("Email is not valid");
+            throw new InvalidEmailException("Email is not valid. Email: " + appUser.getLoginCredential().getEmail());
         }
         if (!Validation.isValidPassword(appUser.getLoginCredential().getPassword())) {
-            throw new InvalidPasswordException("Password is not valid");
+            throw new InvalidPasswordException(
+                    "Password is not valid. Password: " + appUser.getLoginCredential().getPassword());
         }
         if (!Validation.isValidMobileNo(appUser.getMobileNumber())) {
             throw new InvalidMobileNumberException("Mobile number is not valid");

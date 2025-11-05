@@ -23,4 +23,6 @@ public interface IAppUserDAO {
 
     AppUser getUserByMobileNumber(String mobileNo) throws SQLException;
 
+    boolean changePassword(int userId, String newPassword) throws SQLException;
+
 }

@@ -33,7 +33,7 @@ public class FunctionalView {
 
         while (true) {
             System.out.println(
-                    "1. Manage Expenses\n2. Manage Incomes\n3. View Reports\n4. Update Profile\n 5. Delete User\n6. Exit");
+                    "1. Manage Expenses\n2. Manage Incomes\n3. View Reports\n4. View Profile\n5. Update Profile\n6. Delete user\n7. Change Password\n8. Logout");
             choice = Input.getInt("choice");
             switch (choice) {
                 case 1 -> {
@@ -48,13 +48,19 @@ public class FunctionalView {
                     viewReports();
                 }
                 case 4 -> {
-                    updateProfile();
+                    viewProfile();
                 }
                 case 5 -> {
-                    deleteUser();
+                    updateProfile();
                 }
                 case 6 -> {
-                    System.out.println("Exiting...");
+                    deleteUser();
+                }
+                case 7 -> {
+                    changePassword();
+                }
+                case 8 -> {
+                    System.out.println("Logging out...");
                     return;
                 }
                 default -> {
@@ -88,20 +94,22 @@ public class FunctionalView {
         List<Transaction> expenses = transactionController.getTopFiveExpensesByAmount(currentUserId);
         if (expenses == null || expenses.isEmpty()) {
             System.out.println("No expenses found.");
-            return;
+        } else {
+
+            System.out.println("===Top Expenses===");
+            Print.displayTransactionList(expenses);
         }
-        System.out.println("===Top Expenses===");
-        Print.displayTransactionList(expenses);
     }
 
     private void listTopIncomes() {
         List<Transaction> incomes = transactionController.getTopFiveIncomeByAmount(currentUserId);
         if (incomes == null || incomes.isEmpty()) {
             System.out.println("No incomes found.");
-            return;
+        } else {
+
+            System.out.println("===Top Incomes===");
+            Print.displayTransactionList(incomes);
         }
-        System.out.println("===Top Incomes===");
-        Print.displayTransactionList(incomes);
     }
 
     private void listTopCategoriesByAmount() {
@@ -109,10 +117,12 @@ public class FunctionalView {
         List<CategoryAmount> item = transactionController.getTopFiveExpenseCategoriesByAmount(currentUserId);
         if (item == null || item.isEmpty()) {
             System.out.println("No records found");
-        }
-        System.out.println("===Top Categories By Amount== ");
-        for (int i = 0; i < item.size(); i++) {
-            System.out.println((i + 1) + " | " + item.get(i).getName() + " | " + item.get(i).getAmount());
+        } else {
+
+            System.out.println("===Top Categories By Amount== ");
+            for (int i = 0; i < item.size(); i++) {
+                System.out.println((i + 1) + " | " + item.get(i).getName() + " | " + item.get(i).getAmount());
+            }
         }
 
     }
@@ -129,19 +139,15 @@ public class FunctionalView {
     private void updateProfile() {
         AppUser user = AppContext.getCurrentUser();
         System.out.println("=== Update Profile ===");
-        System.out.println("Current Name: " + user.getName());
-        System.out.println("Current Mobile Number: " + user.getMobileNumber());
-        System.out.println("Current Email: " + user.getLoginCredential().getEmail());
+        viewProfile();
         System.out.println("(Press 'k' to keep the current value)");
 
         String name = Input.getString("Name");
         String email = Input.getString("Email");
-        String password = Input.getString("Password");
         String mobileNo = Input.getString("Mobile Number");
 
         name = name.equalsIgnoreCase("k") ? user.getName() : name;
         email = email.equalsIgnoreCase("k") ? user.getLoginCredential().getEmail() : email;
-        password = password.equalsIgnoreCase("k") ? user.getLoginCredential().getPassword() : password;
         mobileNo = mobileNo.equalsIgnoreCase("k") ? user.getMobileNumber() : mobileNo;
 
         if (!Validation.isValidEmail(email)) {
@@ -150,11 +156,6 @@ public class FunctionalView {
         }
         if (!Validation.isValidMobileNo(mobileNo)) {
             System.out.println("Invalid mobile number.");
-            return;
-        }
-
-        if (!Validation.isValidPassword(password)) {
-            System.out.println("Invalid  password.");
             return;
         }
 
@@ -172,8 +173,8 @@ public class FunctionalView {
 
         user.setName(name);
         user.getLoginCredential().setEmail(email);
-        user.getLoginCredential().setPassword(SecurityUtil.hashPassword(password));
         user.setMobileNumber(mobileNo);
+        System.out.println("Updated user " + user);
 
         if (AppContext.getAppUserController().updateUser(user)) {
 
@@ -201,6 +202,39 @@ public class FunctionalView {
             System.out.println("Failed to DElete. Please try again");
 
         }
+    }
+
+    private void changePassword() {
+        AppUser user = AppContext.getCurrentUser();
+        System.out.println("Enter current password:");
+        String currentPassword = Input.getPassword();
+        if (!SecurityUtil.verifyPassword(currentPassword, user.getLoginCredential().getPassword())) {
+            System.out.println("Incorrect current password.");
+            return;
+        }
+        System.out.println("Enter New password:");
+        String newPassword = Input.getPassword();
+        System.out.println("Reenter New password:");
+        String confirmPassword = Input.getPassword();
+        if (!newPassword.equals(confirmPassword)) {
+            System.out.println("Passwords do not match.");
+            return;
+        }
+        user.getLoginCredential().setPassword(SecurityUtil.hashPassword(newPassword));
+
+        if (AppContext.getAppUserController().changePassword(currentUserId, newPassword)) {
+
+            System.out.println("Password changed successfully!");
+        } else {
+            System.out.println("Unable to change password. Try again!");
+        }
+    }
+
+    private void viewProfile() {
+        AppUser user = AppContext.getCurrentUser();
+        System.out.println("Current Name: " + user.getName());
+        System.out.println("Current Mobile Number: " + user.getMobileNumber());
+        System.out.println("Current Email: " + user.getLoginCredential().getEmail());
     }
 
 }

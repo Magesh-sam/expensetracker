@@ -51,8 +51,14 @@ public class AppUser {
         return mobileNumber;
     }
 
-public void setMobileNumber(String mobileNumber) {
+    public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser [name=" + name + ", mobileNumber=" + mobileNumber + ", email=" + loginCredential.getEmail()
+                + "]";
     }
 
 }

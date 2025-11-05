@@ -57,6 +57,8 @@ public class AppUserView {
                 System.out.println("Welcome, " + user.getName());
                 AppContext.getFunctionalView().displayMenu();
             }
+        }else{
+            System.out.println("Something went wrong. Try again");
         }
 
     }

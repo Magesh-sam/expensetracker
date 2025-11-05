@@ -29,6 +29,7 @@ public class TransactionController {
             return transactionService.createTransaction(transaction);
         } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return -1;
     }
