@@ -57,10 +57,7 @@ public class AppUserView {
                 System.out.println("Welcome, " + user.getName());
                 AppContext.getFunctionalView().displayMenu();
             }
-        }else{
-            System.out.println("Something went wrong. Try again");
         }
-
     }
 
     private void registerUser() {
@@ -75,11 +72,7 @@ public class AppUserView {
         if (userId > 0) {
 
             System.out.println("User Created Successfully!");
-        } else {
-
-            System.out.println("Something went wrong. User Registration Failed!");
         }
-
     }
 
     private void resetPassword() {
@@ -92,9 +85,6 @@ public class AppUserView {
         String password = Input.getPassword();
         if (appUserController.resetPassword(mobileNo, email, password)) {
             System.out.println("Password reset Successfully!");
-        } else {
-
-            System.out.println("Something went wrong. Password Reset Failed!");
         }
     }
 }

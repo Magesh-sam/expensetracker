@@ -141,8 +141,8 @@ public class ExpenseView {
         Print.printCategoryList(categories);
 
         while (true) {
-            choice = Input.getInt("Payment method number (1-" + categories.size() + ")");
-            if (choice >= 0 || choice <= categories.size()) {
+            choice = Input.getInt("Category number (1-" + categories.size() + ")");
+            if (choice >= 0 && choice <= categories.size()) {
 
                 break;
             }
@@ -159,7 +159,7 @@ public class ExpenseView {
         System.out.println("Select Payment Method");
         while (true) {
             choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
-            if (choice >= 0 || choice <= paymentMethods.size()) {
+            if (choice >= 0 && choice <= paymentMethods.size()) {
 
                 break;
             }
@@ -225,7 +225,7 @@ public class ExpenseView {
         int choice;
         while (true) {
             choice = Input.getInt("category number (1-" + categories.size() + ")");
-            if (choice >= 1 || choice <= categories.size()) {
+            if (choice >= 1 && choice <= categories.size()) {
 
                 break;
             }
@@ -307,5 +307,4 @@ public class ExpenseView {
 
     }
 
-   
 }
