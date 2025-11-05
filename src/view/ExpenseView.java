@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import model.dto.Category;
 import model.dto.CategoryAmount;
+import model.dto.PaymentMethod;
 import model.dto.Transaction;
 import model.dto.Transaction.TransactionType;
-import model.dto.PaymentMethod;
 import util.Input;
 import util.Print;
 
@@ -18,7 +18,7 @@ public class ExpenseView {
 
     private static ExpenseView expenseView;
     private final TransactionController transactionController = TransactionController.getInstance();
-    private static int currentUserId = AppContext.getCurrentUser().getUserId();
+    private static final int currentUserId = AppContext.getCurrentUser().getUserId();
 
     private ExpenseView() {
     }

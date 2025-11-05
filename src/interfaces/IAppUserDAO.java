@@ -1,7 +1,6 @@
 package interfaces;
 
 import java.sql.SQLException;
-
 import model.dto.AppUser;
 
 public interface IAppUserDAO {
@@ -32,5 +31,7 @@ public interface IAppUserDAO {
     boolean resetPassword(String mobileNo, String password) throws SQLException;
 
     boolean userExists(String email) throws SQLException;
+
+    AppUser getUserByMobileNumber(String mobileNo) throws SQLException;
 
 }

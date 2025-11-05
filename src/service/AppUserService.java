@@ -8,10 +8,8 @@ import exceptions.MobileNumberMismatchException;
 import exceptions.PasswordMismatchException;
 import exceptions.UserNotFoundException;
 import interfaces.IAppUserDAO;
-
 import java.sql.SQLException;
 import java.util.Objects;
-
 import model.dto.AppUser;
 import util.SecurityUtil;
 import util.Validation;
@@ -47,7 +45,7 @@ public class AppUserService {
     }
 
     public AppUser loginUser(String email, String password)
-            throws SQLException, InvalidEmailException, InvalidPasswordException, PasswordMismatchException,UserNotFoundException {
+            throws SQLException, InvalidEmailException, InvalidPasswordException, PasswordMismatchException, UserNotFoundException {
         if (!Validation.isValidEmail(email)) {
             throw new InvalidEmailException("Email is not valid");
         }
@@ -116,6 +114,14 @@ public class AppUserService {
             throw new MobileNumberMismatchException("Email and mobile number does not match");
         }
         return existingUser.getMobileNumber().equals(mobileNo);
+    }
+
+    public AppUser getUserBYMobileNumber(String mobileNo) throws SQLException, InvalidMobileNumberException {
+        
+        if (!Validation.isValidMobileNo(mobileNo)) {
+            throw new InvalidMobileNumberException("Mobile number is not valid");
+        }
+        return appUserDAO.getUserByMobileNumber(mobileNo);
     }
 
     private void validateAppUser(AppUser appUser)

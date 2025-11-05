@@ -7,7 +7,6 @@ import exceptions.InvalidPasswordException;
 import exceptions.MobileNumberMismatchException;
 import exceptions.PasswordMismatchException;
 import exceptions.UserNotFoundException;
-
 import java.sql.SQLException;
 import model.dto.AppUser;
 import service.AppUserService;
@@ -81,6 +80,15 @@ public class AppUserController {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public AppUser getUserByMobileNumber(String mobileNo) {
+        try {
+            return appUserService.getUserBYMobileNumber(mobileNo);
+        } catch (SQLException | InvalidMobileNumberException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
 }

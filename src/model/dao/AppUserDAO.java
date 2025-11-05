@@ -2,7 +2,6 @@ package model.dao;
 
 import context.AppContext;
 import interfaces.IAppUserDAO;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,6 +70,22 @@ public class AppUserDAO implements IAppUserDAO {
         String sql = "SELECT * FROM app_user where LOWER(email) = LOWER(?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
             pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return map(rs);
+                }
+
+            }
+
+        }
+        return null;
+    }
+
+    @Override
+    public AppUser getUserByMobileNumber(String mobileNo) throws SQLException {
+        String sql = "SELECT * FROM app_user where mobile_number = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);) {
+            pstmt.setString(1, mobileNo);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return map(rs);
