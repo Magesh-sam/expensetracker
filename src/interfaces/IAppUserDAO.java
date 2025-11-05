@@ -13,17 +13,6 @@ public interface IAppUserDAO {
 
     AppUser getUserByEmailAndPassword(String email, String password) throws SQLException;
 
-    // public List<AppUser> getAllUsers() throws SQLException {
-    // String sql= "SELECT * FROM app_user";
-    // List<AppUser> users = new ArrayList<>();
-    // try (PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs =
-    // pstmt.executeQuery()) {
-    // while (rs.next()) {
-    // users.add(map(rs));
-    // }
-    // }
-    // return users;
-    // }
     boolean updateUser(AppUser user) throws SQLException;
 
     boolean deleteUser(int userId) throws SQLException;

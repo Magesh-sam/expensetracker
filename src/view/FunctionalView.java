@@ -8,6 +8,8 @@ import model.dto.CategoryAmount;
 import model.dto.Transaction;
 import util.Input;
 import util.Print;
+import util.SecurityUtil;
+import util.Validation;
 
 public class FunctionalView {
 
@@ -126,19 +128,59 @@ public class FunctionalView {
 
     private void updateProfile() {
         AppUser user = AppContext.getCurrentUser();
+        System.out.println("=== Update Profile ===");
+        System.out.println("Current Name: " + user.getName());
+        System.out.println("Current Mobile Number: " + user.getMobileNumber());
+        System.out.println("Current Email: " + user.getLoginCredential().getEmail());
+        System.out.println("(Press 'k' to keep the current value)");
 
-        System.out.println("===Update Profile===");
-        System.out.println("Name: " + user.getName());
-        System.out.println("Mobile Number: " + user.getMobileNumber());
-        System.out.println("Email: " + user.getLoginCredential().getEmail());
-        System.out.println("Email/Mobile Number Cannot be changed");
         String name = Input.getString("Name");
+        String email = Input.getString("Email");
+        String password = Input.getString("Password");
+        String mobileNo = Input.getString("Mobile Number");
 
-        String password = Input.getPassword();
+        name = name.equalsIgnoreCase("k") ? user.getName() : name;
+        email = email.equalsIgnoreCase("k") ? user.getLoginCredential().getEmail() : email;
+        password = password.equalsIgnoreCase("k") ? user.getLoginCredential().getPassword() : password;
+        mobileNo = mobileNo.equalsIgnoreCase("k") ? user.getMobileNumber() : mobileNo;
+
+        if (!Validation.isValidEmail(email)) {
+            System.out.println("Invalid email format.");
+            return;
+        }
+        if (!Validation.isValidMobileNo(mobileNo)) {
+            System.out.println("Invalid mobile number.");
+            return;
+        }
+
+        if (!Validation.isValidPassword(password)) {
+            System.out.println("Invalid  password.");
+            return;
+        }
+
+        AppUser existingByEmail = AppContext.getAppUserController().getUserByEmail(email);
+        if (existingByEmail != null && existingByEmail.getUserId() != user.getUserId()) {
+            System.out.println("User already exists with the given email ID.");
+            return;
+        }
+
+        AppUser existingByMobileNo = AppContext.getAppUserController().getUserByMobileNumber(mobileNo);
+        if (existingByMobileNo != null && existingByMobileNo.getUserId() != user.getUserId()) {
+            System.out.println("User already exists with the given mobile number.");
+            return;
+        }
+
         user.setName(name);
-        user.getLoginCredential().setPassword(password);
-        AppContext.getAppUserController().updateUser(user);
-        System.out.println("Profile Updated Successfully!");
+        user.getLoginCredential().setEmail(email);
+        user.getLoginCredential().setPassword(SecurityUtil.hashPassword(password));
+        user.setMobileNumber(mobileNo);
+
+        if (AppContext.getAppUserController().updateUser(user)) {
+
+            System.out.println("Profile updated successfully!");
+        } else {
+            System.out.println("Failed to Update. Please try again");
+        }
     }
 
     private void deleteUser() {
@@ -150,10 +192,15 @@ public class FunctionalView {
             return;
         }
         int userId = AppContext.getCurrentUser().getUserId();
-        AppContext.getAppUserController().deleteUser(userId);
-        System.out.println("User Deleted Successfully!");
-        AppContext.setCurrentUser(null);
-        AppContext.getAppUserView().displayMenu();
+        if (AppContext.getAppUserController().deleteUser(userId)) {
+
+            System.out.println("User Deleted Successfully!");
+            AppContext.setCurrentUser(null);
+            AppContext.getAppUserView().displayMenu();
+        } else {
+            System.out.println("Failed to DElete. Please try again");
+
+        }
     }
 
 }

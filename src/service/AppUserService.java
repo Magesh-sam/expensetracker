@@ -126,12 +126,20 @@ public class AppUserService {
         return existingUser.getMobileNumber().equals(mobileNo);
     }
 
-    public AppUser getUserBYMobileNumber(String mobileNo) throws SQLException, InvalidMobileNumberException {
+    public AppUser getUserByMobileNumber(String mobileNo) throws SQLException, InvalidMobileNumberException {
 
         if (!Validation.isValidMobileNo(mobileNo)) {
             throw new InvalidMobileNumberException("Mobile number is not valid");
         }
         return appUserDAO.getUserByMobileNumber(mobileNo);
+    }
+
+    public AppUser getUserByEmail(String email) throws SQLException, InvalidEmailException {
+
+        if (!Validation.isValidEmail(email)) {
+            throw new InvalidEmailException("Email is not valid");
+        }
+        return appUserDAO.getUserByEmail(email);
     }
 
     private void validateAppUser(AppUser appUser)

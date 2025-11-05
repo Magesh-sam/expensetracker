@@ -85,8 +85,17 @@ public class AppUserController {
 
     public AppUser getUserByMobileNumber(String mobileNo) {
         try {
-            return appUserService.getUserBYMobileNumber(mobileNo);
+            return appUserService.getUserByMobileNumber(mobileNo);
         } catch (SQLException | InvalidMobileNumberException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public AppUser getUserByEmail(String email) {
+        try {
+            return appUserService.getUserByEmail(email);
+        } catch (SQLException | InvalidEmailException e) {
             System.out.println(e.getMessage());
         }
         return null;
