@@ -30,3 +30,5 @@ fix add expense out of bound excep when entered zero
 check for outofbound when listing item to let the user select. should be like this no>=1 && no<=size()
 
 allow users to update their profile
+
+shouldn't call db each time. handle everything locally and let the user decide when to sync to database like a save to db or sync db function.

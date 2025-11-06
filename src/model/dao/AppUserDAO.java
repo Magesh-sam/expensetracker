@@ -127,7 +127,7 @@ public class AppUserDAO implements IAppUserDAO {
     // }
     @Override
     public boolean updateUser(AppUser user) throws SQLException {
-        String sql = "UPDATE app_user set name = ?, email = ?, mobile_number mobile WHERE id = ?";
+        String sql = "UPDATE app_user set name = ?, email = ?, mobile_number = ?  WHERE id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getName());
             pstmt.setString(2, user.getLoginCredential().getEmail());
