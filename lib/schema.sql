@@ -23,6 +23,12 @@ CREATE Table category (
     name VARCHAR(255) UNIQUE NOT NULL
 );
 
+CREATE TABLE user_category (
+    app_user_id INT REFERENCES app_user (id) ON DELETE CASCADE,
+    category_id INT REFERENCES category (id) ON DELETE CASCADE,
+    PRIMARY KEY (app_user_id, category_id)
+);
+
 create Table payment_method (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
@@ -35,10 +41,9 @@ CREATE TABLE transaction_tracker (
     category_id INT REFERENCES category (id) ON DELETE SET NULL,
     app_user_id INT REFERENCES app_user (id) ON DELETE CASCADE,
     payment_method_id INT REFERENCES payment_method (id) ON DELETE SET NULL,
-    transaction_type transaction_type  NOT NULL,
+    transaction_type transaction_type NOT NULL,
     created_at TIMESTAMP NOT NULL
 );
-
 
 INSERT INTO
     payment_method (name)
