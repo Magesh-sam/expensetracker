@@ -2,11 +2,12 @@ package view;
 
 import context.AppContext;
 import controller.AppUserController;
+import interfaces.IView;
 import model.dto.AppUser;
 import model.dto.Credential;
 import util.Input;
 
-public class AppUserView {
+public class AppUserView implements IView {
 
     private static final AppUserController appUserController = AppContext.getAppUserController();
     private static AppUserView appUserView;
@@ -18,6 +19,7 @@ public class AppUserView {
         return appUserView;
     }
 
+    @Override
     public void displayMenu() {
         int choice;
 

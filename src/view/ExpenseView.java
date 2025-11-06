@@ -2,6 +2,8 @@ package view;
 
 import context.AppContext;
 import controller.TransactionController;
+import interfaces.IView;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,7 +16,7 @@ import model.dto.Transaction.TransactionType;
 import util.Input;
 import util.Print;
 
-public class ExpenseView {
+public class ExpenseView implements IView {
 
     private static ExpenseView expenseView;
     private final TransactionController transactionController = TransactionController.getInstance();
@@ -30,6 +32,7 @@ public class ExpenseView {
         return expenseView;
     }
 
+    @Override
     public void displayMenu() {
         int choice;
 

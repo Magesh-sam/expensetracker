@@ -2,6 +2,8 @@ package view;
 
 import context.AppContext;
 import controller.TransactionController;
+import interfaces.IView;
+
 import java.util.List;
 import model.dto.AppUser;
 import model.dto.CategoryAmount;
@@ -11,7 +13,7 @@ import util.Print;
 import util.SecurityUtil;
 import util.Validation;
 
-public class FunctionalView {
+public class FunctionalView implements IView {
 
     private static FunctionalView functionalView;
     private static final TransactionController transactionController = AppContext.getTransactionController();
@@ -27,6 +29,7 @@ public class FunctionalView {
         return functionalView;
     }
 
+    @Override
     public void displayMenu() {
         printStats();
         int choice;

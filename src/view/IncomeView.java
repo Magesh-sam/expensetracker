@@ -2,6 +2,8 @@ package view;
 
 import context.AppContext;
 import controller.TransactionController;
+import interfaces.IView;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ import model.dto.PaymentMethod;
 import util.Input;
 import util.Print;
 
-public class IncomeView {
+public class IncomeView implements IView {
 
     private static IncomeView incomeView;
     private final TransactionController transactionController = TransactionController.getInstance();
@@ -29,6 +31,7 @@ public class IncomeView {
         return incomeView;
     }
 
+    @Override
     public void displayMenu() {
         int choice;
 
