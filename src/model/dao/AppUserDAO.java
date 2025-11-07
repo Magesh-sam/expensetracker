@@ -27,15 +27,15 @@ public class AppUserDAO implements IAppUserDAO {
     }
 
     @Override
-    public int registerUser(AppUser appuser) throws SQLException {
+    public int registerUser(AppUser appUser) throws SQLException {
         String sql = "INSERT INTO app_user (name,email,password,mobile_number) VALUES (?,?,?,?) ";
         try (
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
 
-            pstmt.setString(1, appuser.getName());
-            pstmt.setString(2, appuser.getLoginCredential().getEmail());
-            pstmt.setString(3, appuser.getLoginCredential().getPassword());
-            pstmt.setString(4, appuser.getMobileNumber());
+            pstmt.setString(1, appUser.getName());
+            pstmt.setString(2, appUser.getLoginCredential().getEmail());
+            pstmt.setString(3, appUser.getLoginCredential().getPassword());
+            pstmt.setString(4, appUser.getMobileNumber());
 
             pstmt.executeUpdate();
 
@@ -178,6 +178,8 @@ public class AppUserDAO implements IAppUserDAO {
             }
         }
     }
+
+    
 
     private AppUser map(ResultSet rs) throws SQLException {
         AppUser u = new AppUser();
