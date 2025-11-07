@@ -6,6 +6,7 @@ import model.dao.AppUserDAO;
 import model.dao.CategoryDAO;
 import model.dao.PaymentMethodDAO;
 import model.dao.TransactionDAO;
+import model.dao.UserCategoryDAO;
 import model.dto.AppUser;
 import service.AppUserService;
 import util.DBConfig;
@@ -37,7 +38,7 @@ public class AppContext {
 
     }
 
-    // dDAOs
+    // DAOs
     public static IAppUserDAO getAppUserDAO() {
         return AppUserDAO.getInstance();
     }
@@ -52,6 +53,10 @@ public class AppContext {
 
     public static TransactionDAO getTransactionDAO() {
         return TransactionDAO.getInstance();
+    }
+
+    public static UserCategoryDAO getUserCategoryDAO(){
+        return UserCategoryDAO.getInstance();
     }
 
     // services
