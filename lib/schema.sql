@@ -20,7 +20,9 @@ CREATE Table app_user (
 
 CREATE Table category (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL
+    app_user_id INT REFERENCES app_user (id) DEFAULT NULL ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    transaction_type transaction_type NOT NULL
 );
 
 CREATE TABLE user_category (
@@ -55,14 +57,15 @@ VALUES ('Cash'),
     ('Other');
 
 INSERT INTO
-    category (name)
-VALUES ('Groceries'),
-    ('Restaurants'),
-    ('Entertainment'),
-    ('Clothing'),
-    ('Health'),
-    ('Travel'),
-    ('Salary'),
-    ('Freelance'),
-    ('Bonus'),
-    ('Other');
+    category (name,transaction_type)
+VALUES ('Groceries', 'expense'),
+    ('Restaurants', 'expense'),
+    ('Entertainment', 'expense'),
+    ('Clothing', 'expense'),
+    ('Health', 'expense'),
+    ('Travel', 'expense'),
+    ('Salary', 'income'),
+    ('Freelance', 'income'),
+    ('Bonus', 'income'),
+    ('Other', 'income'),
+    ('Other', 'expense');
