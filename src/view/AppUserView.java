@@ -51,14 +51,13 @@ public class AppUserView implements IView {
         String email = Input.getEmail();
         String password = Input.getPassword();
         AppUser user = appUserController.login(email, password);
+        System.out.println(user==null ? " user not found " : user);
         if (user != null) {
 
-            if (AppContext.getCurrentUser() == null) {
 
                 AppContext.setCurrentUser(user);
                 System.out.println("Welcome, " + user.getName());
                 AppContext.getFunctionalView().displayMenu();
-            }
         }
     }
 
