@@ -41,3 +41,8 @@ SELECT ?, id
 FROM category;
 
 new menu -> category CRUD
+
+
+the categories table should be modified for user specific categories
+set user id null for default and user can't do anything about this
+if it has user id then it is their custom category. they can do CRUD on this.
