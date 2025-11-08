@@ -3,7 +3,6 @@ package view;
 import context.AppContext;
 import controller.TransactionController;
 import interfaces.IView;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -75,7 +74,7 @@ public class ExpenseView implements IView {
         System.out.println("=== Add Expense ===");
         String expenseName = Input.getString("expense title");
         System.out.println("Select Category");
-        List<Category> categories = AppContext.getCategoryController().getAllCategories();
+        List<Category> categories = AppContext.getCategoryController().getExpenseCategories(currentUserId);
         Print.printCategoryList(categories);
 
         int choice;
@@ -140,7 +139,7 @@ public class ExpenseView implements IView {
         choice = 0;
         System.out.println("press enter/0 to keep the values unchanged");
         System.out.println("Select Category");
-        List<Category> categories = AppContext.getCategoryController().getAllCategories();
+        List<Category> categories = AppContext.getCategoryController().getExpenseCategories(currentUserId);
         Print.printCategoryList(categories);
 
         while (true) {
@@ -222,7 +221,7 @@ public class ExpenseView implements IView {
     private void listExpensesByCategory() {
         System.out.println("=== Expenses by Category ===");
         System.out.println("Select Category");
-        List<Category> categories = AppContext.getCategoryController().getAllCategories();
+        List<Category> categories = AppContext.getCategoryController().getExpenseCategories(currentUserId);
         Print.printCategoryList(categories);
 
         int choice;

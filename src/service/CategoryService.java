@@ -2,12 +2,11 @@ package service;
 
 import context.AppContext;
 import interfaces.ICategoryDAO;
-import model.dto.Category;
-import util.Validation;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
+import model.dto.Category;
+import util.Validation;
 
 public class CategoryService {
 
@@ -41,6 +40,26 @@ public class CategoryService {
 
     public List<Category> getAllCategories() throws SQLException {
         return categoryDAO.getAllCategory();
+    }
+
+    public List<Category> getIncomeCategories(int userId) throws SQLException {
+        Validation.validateId("User", userId);
+        return categoryDAO.getIncomeCategories(userId);
+    }
+
+    public List<Category> getExpenseCategories(int userId) throws SQLException {
+        Validation.validateId("User", userId);
+        return categoryDAO.getExpenseCategories(userId);
+    }
+
+    public List<Category> getIncomeCategoriesByUser(int userId) throws SQLException {
+        Validation.validateId("User", userId);
+        return categoryDAO.getIncomeCategoriesByUser(userId);
+    }
+
+    public List<Category> getExpenseCategoriesByUser(int userId) throws SQLException {
+        Validation.validateId("User", userId);
+        return categoryDAO.getExpenseCategoriesByUser(userId);
     }
 
     public boolean updateCategory(Category category) throws SQLException {

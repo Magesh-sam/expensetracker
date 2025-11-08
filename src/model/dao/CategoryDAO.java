@@ -1,5 +1,7 @@
 package model.dao;
 
+import context.AppContext;
+import interfaces.ICategoryDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,10 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import context.AppContext;
-import interfaces.ICategoryDAO;
 import model.dto.Category;
+import model.dto.Transaction;
 
 public class CategoryDAO implements ICategoryDAO {
 
@@ -74,6 +74,68 @@ public class CategoryDAO implements ICategoryDAO {
     }
 
     @Override
+    public List<Category> getIncomeCategories(int userId) throws SQLException {
+        String sql = "SELECT * FROM category where transaction_type = 'income' AND (app_user_id = ? OR app_user_id IS NULL)";
+        List<Category> categories = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    categories.add(map(rs));
+                }
+            }
+        }
+        return categories;
+    }
+
+    // for CRUD
+    @Override
+    public List<Category> getIncomeCategoriesByUser(int userId) throws SQLException {
+        String sql = "SELECT * FROM category where transaction_type = 'income' AND app_user_id = ?";
+        List<Category> categories = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    categories.add(map(rs));
+                }
+            }
+        }
+        return categories;
+    }
+
+    @Override
+    public List<Category> getExpenseCategories(int userId) throws SQLException {
+        String sql = "SELECT * FROM category where transaction_type = 'expense' AND (app_user_id = ? OR app_user_id IS NULL)";
+        List<Category> categories = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    categories.add(map(rs));
+                }
+            }
+        }
+        return categories;
+    }
+
+    // for CRUD
+    @Override
+    public List<Category> getExpenseCategoriesByUser(int userId) throws SQLException {
+        String sql = "SELECT * FROM category where transaction_type = 'expense' AND app_user_id = ?";
+        List<Category> categories = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    categories.add(map(rs));
+                }
+            }
+        }
+        return categories;
+    }
+
+    @Override
     public boolean categoryExists(String category) throws SQLException {
         String sql = "  SELECT * FROM category where lower(name) = lower(?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -109,7 +171,9 @@ public class CategoryDAO implements ICategoryDAO {
     private Category map(ResultSet rs) throws SQLException {
         Category c = new Category();
         c.setCategoryId(rs.getInt(1));
+        c.setAppUserId(rs.getInt("app_user_id"));
         c.setName(rs.getString("name"));
+        c.setTransactionType(Transaction.TransactionType.valueOf(rs.getString("transaction_type")));
         return c;
 
     }

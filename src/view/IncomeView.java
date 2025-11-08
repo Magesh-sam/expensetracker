@@ -3,15 +3,14 @@ package view;
 import context.AppContext;
 import controller.TransactionController;
 import interfaces.IView;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import model.dto.Category;
+import model.dto.PaymentMethod;
 import model.dto.Transaction;
 import model.dto.Transaction.TransactionType;
-import model.dto.PaymentMethod;
 import util.Input;
 import util.Print;
 
@@ -67,7 +66,7 @@ public class IncomeView implements IView {
         System.out.println("=== Add Income ===");
         String incomeName = Input.getString("income title");
         System.out.println("Select Category");
-        List<Category> categories = AppContext.getCategoryController().getAllCategories();
+        List<Category> categories = AppContext.getCategoryController().getIncomeCategories(currentUserId);
         Print.printCategoryList(categories);
 
         int choice;
@@ -132,7 +131,7 @@ public class IncomeView implements IView {
         choice = 0;
         System.out.println("press enter/0 to keep the values unchanged");
         System.out.println("Select Category");
-        List<Category> categories = AppContext.getCategoryController().getAllCategories();
+        List<Category> categories = AppContext.getCategoryController().getIncomeCategories(choice);
         Print.printCategoryList(categories);
 
         while (true) {
@@ -214,7 +213,7 @@ public class IncomeView implements IView {
     private void listIncomeByCategory() {
         System.out.println("=== Incomes by Category ===");
         System.out.println("Select Category");
-        List<Category> categories = AppContext.getCategoryController().getAllCategories();
+        List<Category> categories = AppContext.getCategoryController().getIncomeCategories(currentUserId); 
         Print.printCategoryList(categories);
 
         int choice;

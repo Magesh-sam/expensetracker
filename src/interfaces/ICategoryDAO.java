@@ -2,7 +2,6 @@ package interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import model.dto.Category;
 
 public interface ICategoryDAO {
@@ -18,5 +17,13 @@ public interface ICategoryDAO {
     boolean deleteCategory(int categoryId) throws SQLException;
 
     boolean categoryExists(String category) throws SQLException;
+
+    List<Category> getIncomeCategories(int userId) throws SQLException;
+
+    List<Category> getExpenseCategories(int userId) throws SQLException;
+
+    List<Category> getIncomeCategoriesByUser(int userId) throws SQLException;
+
+    List<Category> getExpenseCategoriesByUser(int userId) throws SQLException;
 
 }

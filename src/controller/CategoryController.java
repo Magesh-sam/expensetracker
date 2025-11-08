@@ -1,11 +1,10 @@
 package controller;
 
 import context.AppContext;
-import model.dto.Category;
-import service.CategoryService;
-
 import java.sql.SQLException;
 import java.util.List;
+import model.dto.Category;
+import service.CategoryService;
 
 public class CategoryController {
 
@@ -44,6 +43,42 @@ public class CategoryController {
         try {
             return categoryService.getAllCategories();
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Category> getIncomeCategories(int userId) {
+        try {
+            return categoryService.getIncomeCategories(userId);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Category> getExpenseCategories(int userId) {
+        try {
+            return categoryService.getExpenseCategories(userId);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Category> getIncomeCategoriesByUser(int userId) {
+        try {
+            return categoryService.getIncomeCategoriesByUser(userId);
+        } catch (SQLException | IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Category> getExpenseCategoriesByUser(int userId) {
+        try {
+            return categoryService.getExpenseCategoriesByUser(userId);
+        } catch (SQLException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return null;

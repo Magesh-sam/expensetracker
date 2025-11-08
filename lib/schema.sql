@@ -18,13 +18,12 @@ CREATE Table app_user (
     mobile_number VARCHAR(10) UNIQUE NOT NULL CHECK (mobile_number ~ '^[0-9]{10}$')
 );
 
-CREATE Table category (
+CREATE TABLE category (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    app_user_id INT REFERENCES app_user (id) DEFAULT NULL ON DELETE CASCADE,
+    app_user_id INT REFERENCES app_user (id) ON DELETE CASCADE DEFAULT NULL,
     name VARCHAR(255) NOT NULL,
     transaction_type transaction_type NOT NULL
 );
-
 CREATE TABLE user_category (
     app_user_id INT REFERENCES app_user (id) ON DELETE CASCADE,
     category_id INT REFERENCES category (id) ON DELETE CASCADE,
