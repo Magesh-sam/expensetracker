@@ -18,7 +18,7 @@ import util.Print;
 public class ExpenseView implements IView {
 
     private static ExpenseView expenseView;
-    private final TransactionController transactionController = TransactionController.getInstance();
+    private final TransactionController transactionController = AppContext.getTransactionController();
     private static final int currentUserId = AppContext.getCurrentUser().getUserId();
 
     private ExpenseView() {
@@ -37,7 +37,7 @@ public class ExpenseView implements IView {
 
         while (true) {
             System.out.println(
-                    "1. Add Expense\n2. Edit Expense\n3. Delete Expense\n4. List Expenses\n5. List Expenses by Category\n6. List Expenses by Date Range\n7. List Expenses by Date\n8. List Top Expenses\n9. List Top Categoriesby expense\n10. Go back");
+                    "1. Add Expense\n2. Edit Expense\n3. Delete Expense\n4. List Expenses\n5. List Expenses by Category\n6. List Expenses by Date Range\n7. List Expenses by Date\n8. List Top Expenses\n9. List Top Categories by expense\n10. Go back");
             choice = Input.getInt("choice");
             switch (choice) {
                 case 1 ->
@@ -61,6 +61,9 @@ public class ExpenseView implements IView {
                     listTopCategoriesByExpense();
                 }
                 case 10 -> {
+                    //managecategories
+                }
+                case 11 -> {
 
                     return;
                 }
@@ -306,6 +309,13 @@ public class ExpenseView implements IView {
         for (int i = 0; i < expenses.size(); i++) {
             System.out.println((i + 1) + " | " + expenses.get(i).getName() + " | " + expenses.get(i).getAmount());
         }
+
+    }
+
+    private void manageExpenseCategories() {
+        System.out.println("===Expense Category Management===");
+        List<Category> categories = AppContext.getCategoryController().getExpenseCategories(currentUserId);
+        Print.printCategoryList(categories);
 
     }
 

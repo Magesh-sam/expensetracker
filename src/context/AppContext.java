@@ -11,6 +11,7 @@ import model.dto.AppUser;
 import service.AppUserService;
 import util.DBConfig;
 import view.AppUserView;
+import view.CategoryView;
 import view.ExpenseView;
 import view.FunctionalView;
 import view.IncomeView;
@@ -55,7 +56,7 @@ public class AppContext {
         return TransactionDAO.getInstance();
     }
 
-    public static UserCategoryDAO getUserCategoryDAO(){
+    public static UserCategoryDAO getUserCategoryDAO() {
         return UserCategoryDAO.getInstance();
     }
 
@@ -110,6 +111,11 @@ public class AppContext {
         return IncomeView.getInstance();
     }
 
+    public static CategoryView getCategoryView() {
+        return CategoryView.getInstance();
+    }
+
+    //user state
     public static AppUser getCurrentUser() {
         return currentUser;
     }

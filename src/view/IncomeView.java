@@ -17,7 +17,7 @@ import util.Print;
 public class IncomeView implements IView {
 
     private static IncomeView incomeView;
-    private final TransactionController transactionController = TransactionController.getInstance();
+    private final TransactionController transactionController = AppContext.getTransactionController();
     private static int currentUserId = AppContext.getCurrentUser().getUserId();
 
     private IncomeView() {
@@ -213,7 +213,7 @@ public class IncomeView implements IView {
     private void listIncomeByCategory() {
         System.out.println("=== Incomes by Category ===");
         System.out.println("Select Category");
-        List<Category> categories = AppContext.getCategoryController().getIncomeCategories(currentUserId); 
+        List<Category> categories = AppContext.getCategoryController().getIncomeCategories(currentUserId);
         Print.printCategoryList(categories);
 
         int choice;

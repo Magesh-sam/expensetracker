@@ -25,7 +25,9 @@ public class CategoryService {
 
     public int createCategory(Category category) throws SQLException {
         Objects.requireNonNull(category, "Category cannot be null");
-        validateCategory(category);
+        if (category.getName() == null || category.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Category cannot be empty or null");
+        }
         if (categoryDAO.categoryExists(category.getName())) {
             throw new IllegalArgumentException("Category Already Exists");
         }

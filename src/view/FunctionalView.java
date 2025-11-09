@@ -36,7 +36,7 @@ public class FunctionalView implements IView {
 
         while (true) {
             System.out.println(
-                    "1. Manage Expenses\n2. Manage Incomes\n3. View Reports\n4. View Profile\n5. Update Profile\n6. Delete user\n7. Change Password\n8. Logout");
+                    "1. Manage Expenses\n2. Manage Incomes\n3. Manage Categories\n4. View Reports\n5. View Profile\n6. Update Profile\n7. Delete user\n8. Change Password\n9. Logout");
             choice = Input.getInt("choice");
             switch (choice) {
                 case 1 -> {
@@ -48,21 +48,24 @@ public class FunctionalView implements IView {
                     manageIncomes();
                 }
                 case 3 -> {
-                    viewReports();
+                    manageCategories();
                 }
                 case 4 -> {
-                    viewProfile();
+                    viewReports();
                 }
                 case 5 -> {
-                    updateProfile();
+                    viewProfile();
                 }
                 case 6 -> {
-                    deleteUser();
+                    updateProfile();
                 }
                 case 7 -> {
-                    changePassword();
+                    deleteUser();
                 }
                 case 8 -> {
+                    changePassword();
+                }
+                case 9 -> {
                     System.out.println("Logging out...");
                     return;
                 }
@@ -81,6 +84,12 @@ public class FunctionalView implements IView {
     private void manageIncomes() {
         System.out.println("===Income Management===");
         AppContext.getIncomeView().displayMenu();
+
+    }
+
+    private void manageCategories() {
+        System.out.println("===Category Management===");
+        AppContext.getCategoryView().displayMenu();
 
     }
 
