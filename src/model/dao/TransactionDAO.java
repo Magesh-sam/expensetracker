@@ -30,15 +30,14 @@ public class TransactionDAO {
 
     // add a transaction
     public int createTransaction(Transaction transaction) throws SQLException {
-        String sql = "INSERT INTO transaction_tracker (category_id,app_user_id,payment_method_id,amount,transaction_type, created_at,name) VALUES (?,?,?,?,?::transaction_type,?,?)";
+        String sql = "INSERT INTO transaction_tracker (category_id,app_user_id,amount,transaction_type, created_at,name) VALUES (?,?,?,?::transaction_type,?,?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, transaction.getCategoryId());
             pstmt.setInt(2, transaction.getAppuserId());
-            pstmt.setInt(3, transaction.getPaymentMethodId());
-            pstmt.setBigDecimal(4, transaction.getAmount());
-            pstmt.setString(5, transaction.getTransactionType().toString());
-            pstmt.setTimestamp(6, Timestamp.valueOf(transaction.getCreatedAt()));
-            pstmt.setString(7, transaction.getName());
+            pstmt.setBigDecimal(3, transaction.getAmount());
+            pstmt.setString(4, transaction.getTransactionType().toString());
+            pstmt.setTimestamp(5, Timestamp.valueOf(transaction.getCreatedAt()));
+            pstmt.setString(6, transaction.getName());
             pstmt.executeUpdate();
             try (ResultSet rs = pstmt.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -204,15 +203,14 @@ public class TransactionDAO {
     }
 
     public boolean updateTransaction(Transaction transaction) throws SQLException {
-        String sql = "UPDATE transaction_tracker SET name =?, category_id = ?,payment_method_id = ?,amount = ?,transaction_type = ?::transaction_type WHERE id = ? AND app_user_id = ?";
+        String sql = "UPDATE transaction_tracker SET name =?, category_id = ?,amount = ?,transaction_type = ?::transaction_type WHERE id = ? AND app_user_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, transaction.getName());
             pstmt.setInt(2, transaction.getCategoryId());
-            pstmt.setInt(3, transaction.getPaymentMethodId());
-            pstmt.setBigDecimal(4, transaction.getAmount());
-            pstmt.setString(5, transaction.getTransactionType().toString());
-            pstmt.setInt(6, transaction.getTransactionId());
-            pstmt.setInt(7, transaction.getAppuserId());
+            pstmt.setBigDecimal(3, transaction.getAmount());
+            pstmt.setString(4, transaction.getTransactionType().toString());
+            pstmt.setInt(5, transaction.getTransactionId());
+            pstmt.setInt(6, transaction.getAppuserId());
             return pstmt.executeUpdate() > 0;
         }
     }
@@ -326,7 +324,6 @@ public class TransactionDAO {
         t.setTransactionId(rs.getInt("id"));
         t.setCategoryId(rs.getInt("category_id"));
         t.setAppuserId(rs.getInt("app_user_id"));
-        t.setPaymentMethodId(rs.getInt("payment_method_id"));
         t.setAmount(rs.getBigDecimal("amount"));
         t.setTransactionType(Transaction.TransactionType.valueOf(rs.getString("transaction_type")));
         t.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());

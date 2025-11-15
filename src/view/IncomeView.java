@@ -82,25 +82,10 @@ public class IncomeView implements IView {
         int categoryId = categories.get(choice - 1).getCategoryId();
         // resetting chocie for next input
         choice = 0;
-        List<PaymentMethod> paymentMethods = AppContext.getPaymentController().getAllPaymentMethods();
-
-        Print.printPaymentMethodList(paymentMethods);
-        System.out.println("Select Payment Method");
-        while (true) {
-            choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
-            if (choice >= 1 && choice <= paymentMethods.size()) {
-
-                break;
-            }
-
-            System.out.println("Invalid selection.");
-        }
-
-        int paymentMethodId = paymentMethods.get(choice - 1).getPaymentMethodId();
 
         BigDecimal amount = Input.getBigDecimal("amount");
 
-        Transaction transaction = new Transaction(categoryId, currentUserId, paymentMethodId,
+        Transaction transaction = new Transaction(categoryId, currentUserId,
                 amount, TransactionType.income, LocalDateTime.now(), incomeName);
 
         int result = transactionController.createTransaction(transaction);
@@ -147,27 +132,10 @@ public class IncomeView implements IView {
         int newCategoryId = choice == 0 ? existingIncome.getCategoryId() : categories.get(choice - 1).getCategoryId();
         // resetting chocie for next input
         choice = 0;
-        List<PaymentMethod> paymentMethods = AppContext.getPaymentController().getAllPaymentMethods();
-
-        Print.printPaymentMethodList(paymentMethods);
-        System.out.println("Select Payment Method");
-        while (true) {
-            choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
-            if (choice >= 0 && choice <= paymentMethods.size()) {
-
-                break;
-            }
-
-            System.out.println("Invalid selection.");
-        }
-
-        int paymentMethodId = choice == 0 ? existingIncome.getPaymentMethodId()
-                : paymentMethods.get(choice - 1).getPaymentMethodId();
 
         BigDecimal amount = Input.getBigDecimal("amount");
         amount = amount.doubleValue() == 0 ? existingIncome.getAmount() : amount;
         existingIncome.setCategoryId(newCategoryId);
-        existingIncome.setPaymentMethodId(paymentMethodId);
         existingIncome.setAmount(amount);
         if (transactionController.updateTransaction(existingIncome)) {
             System.out.println("Income updated successfully!");

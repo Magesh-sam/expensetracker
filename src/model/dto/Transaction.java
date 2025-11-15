@@ -12,35 +12,32 @@ public class Transaction {
     private String name;
     private int appUserId;
     private int transactionId;
-    private int categoryId;
-    private int paymentMethodId;
+    private int categoryId;    
     private BigDecimal amount;
     private TransactionType transactionType;
     private LocalDateTime createdAt;
 
-    public Transaction(int transactionId, int categoryId, int appUserId, int paymentMethodId, BigDecimal amount,
+    public Transaction(int categoryId, int appUserId, BigDecimal amount,
+            TransactionType transactionType, LocalDateTime createdAt, String name) {
+        
+        this.categoryId = categoryId;
+        this.appUserId = appUserId;
+        this.amount = amount;
+        this.transactionType = transactionType;
+        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
+        this.name = name;
+    }
+
+    public Transaction(int transactionId, int categoryId, int appUserId, BigDecimal amount,
             TransactionType transactionType, LocalDateTime createdAt, String name) {
         this.transactionId = transactionId;
         this.categoryId = categoryId;
         this.appUserId = appUserId;
-        this.paymentMethodId = paymentMethodId;
         this.amount = amount;
         this.transactionType = transactionType;
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
         this.name = name;
     }
-
-    public Transaction(int categoryId, int appUserId, int paymentMethodId, BigDecimal amount,
-            TransactionType transactionType, LocalDateTime createdAt, String name) {
-        this.categoryId = categoryId;
-        this.appUserId = appUserId;
-        this.paymentMethodId = paymentMethodId;
-        this.amount = amount;
-        this.transactionType = transactionType;
-        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
-        this.name = name;
-    }
-
     public Transaction(BigDecimal amount, TransactionType transactionType, LocalDateTime createdAt) {
         this.amount = amount;
         this.transactionType = transactionType;
@@ -72,14 +69,6 @@ public class Transaction {
 
     public void setAppuserId(int appuserId) {
         this.appUserId = appuserId;
-    }
-
-    public int getPaymentMethodId() {
-        return paymentMethodId;
-    }
-
-    public void setPaymentMethodId(int paymentMethodId) {
-        this.paymentMethodId = paymentMethodId;
     }
 
     public BigDecimal getAmount() {

@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import model.dto.Category;
 import model.dto.CategoryAmount;
-import model.dto.PaymentMethod;
 import model.dto.Transaction;
 import model.dto.Transaction.TransactionType;
 import util.Input;
@@ -61,9 +60,6 @@ public class ExpenseView implements IView {
                     listTopCategoriesByExpense();
                 }
                 case 10 -> {
-                    //managecategories
-                }
-                case 11 -> {
 
                     return;
                 }
@@ -93,25 +89,10 @@ public class ExpenseView implements IView {
         int categoryId = categories.get(choice - 1).getCategoryId();
         // resetting chocie for next input
         choice = 0;
-        List<PaymentMethod> paymentMethods = AppContext.getPaymentController().getAllPaymentMethods();
-
-        Print.printPaymentMethodList(paymentMethods);
-        System.out.println("Select Payment Method");
-        while (true) {
-            choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
-            if (choice >= 1 && choice <= paymentMethods.size()) {
-
-                break;
-            }
-
-            System.out.println("Invalid selection.");
-        }
-
-        int paymentMethodId = paymentMethods.get(choice - 1).getPaymentMethodId();
 
         BigDecimal amount = Input.getBigDecimal("amount");
 
-        Transaction transaction = new Transaction(categoryId, currentUserId, paymentMethodId,
+        Transaction transaction = new Transaction(categoryId, currentUserId,
                 amount, TransactionType.expense, LocalDateTime.now(), expenseName);
 
         int result = transactionController.createTransaction(transaction);
@@ -158,27 +139,10 @@ public class ExpenseView implements IView {
         int newCategoryId = choice == 0 ? existingExpense.getCategoryId() : expenses.get(choice - 1).getCategoryId();
         // resetting chocie for next input
         choice = 0;
-        List<PaymentMethod> paymentMethods = AppContext.getPaymentController().getAllPaymentMethods();
-
-        Print.printPaymentMethodList(paymentMethods);
-        System.out.println("Select Payment Method");
-        while (true) {
-            choice = Input.getInt("Payment method number (1-" + paymentMethods.size() + ")");
-            if (choice >= 0 && choice <= paymentMethods.size()) {
-
-                break;
-            }
-
-            System.out.println("Invalid selection.");
-        }
-
-        int paymentMethodId = choice == 0 ? existingExpense.getPaymentMethodId()
-                : paymentMethods.get(choice - 1).getPaymentMethodId();
 
         BigDecimal amount = Input.getBigDecimal("amount");
         amount = amount.doubleValue() == 0 ? existingExpense.getAmount() : amount;
         existingExpense.setCategoryId(newCategoryId);
-        existingExpense.setPaymentMethodId(paymentMethodId);
         existingExpense.setAmount(amount);
         if (transactionController.updateTransaction(existingExpense)) {
             System.out.println("Expense updated successfully!");
@@ -309,13 +273,6 @@ public class ExpenseView implements IView {
         for (int i = 0; i < expenses.size(); i++) {
             System.out.println((i + 1) + " | " + expenses.get(i).getName() + " | " + expenses.get(i).getAmount());
         }
-
-    }
-
-    private void manageExpenseCategories() {
-        System.out.println("===Expense Category Management===");
-        List<Category> categories = AppContext.getCategoryController().getExpenseCategories(currentUserId);
-        Print.printCategoryList(categories);
 
     }
 

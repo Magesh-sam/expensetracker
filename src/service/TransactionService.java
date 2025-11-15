@@ -34,7 +34,6 @@ public class TransactionService implements ITransactionService {
         validateTitle(transaction.getName());
         Validation.validateId("User", transaction.getAppUserId());
         Validation.validateId("Category", transaction.getCategoryId());
-        Validation.validateId("Payment Method", transaction.getPaymentMethodId());
         validateAmount(transaction.getAmount());
         validateTransactionStatus(transaction.getTransactionType());
         return transactionDAO.createTransaction(transaction);
@@ -224,7 +223,6 @@ public class TransactionService implements ITransactionService {
         Validation.validateId("Transaction", transaction.getTransactionId());
         Validation.validateId("User", transaction.getAppUserId());
         Validation.validateId("Category", transaction.getCategoryId());
-        Validation.validateId("Payment Method", transaction.getPaymentMethodId());
         Validation.validateId("Transaction", transaction.getTransactionId());
         validateTitle(transaction.getName());
         validateAmount(transaction.getAmount());
